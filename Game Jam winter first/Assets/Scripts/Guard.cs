@@ -15,16 +15,19 @@ public class Guard : MonoBehaviour
     float viewAngle;
 
     public Transform pathHolder;
-    Transform player;
+    [HideInInspector] public Transform player;
     Color originalSpotlightColour;
-
+    [HideInInspector] public Vector3[] waypoints;
+    int currentIndex = 0;
+    Vector3 lastpos = Vector3.zero;
     void Start()
     {
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         viewAngle = spotlight.spotAngle;
         originalSpotlightColour = spotlight.color;
 
-        Vector3[] waypoints = new Vector3[pathHolder.childCount];
+        waypoints = new Vector3[pathHolder.childCount];
         for (int i = 0; i < waypoints.Length; i++)
         {
             waypoints[i] = pathHolder.GetChild(i).position;
@@ -32,9 +35,17 @@ public class Guard : MonoBehaviour
         }
 
         StartCoroutine(FollowPath(waypoints));
-
     }
-
+    private void OnEnable()
+    {
+        if (player != null)
+            StartCoroutine(FollowPath(waypoints));
+    }
+    private void OnDisable()
+    {
+        lastpos = transform.position;
+        StopAllCoroutines();
+    }
     void Update()
     {
         if (CanSeePlayer())
@@ -47,7 +58,8 @@ public class Guard : MonoBehaviour
         }
     }
 
-    bool CanSeePlayer()
+
+    public bool CanSeePlayer()
     {
         if (Vector3.Distance(transform.position, player.position) < viewDistance)
         {
@@ -66,10 +78,11 @@ public class Guard : MonoBehaviour
 
     IEnumerator FollowPath(Vector3[] waypoints)
     {
-        transform.position = waypoints[0];
+        if (lastpos != Vector3.zero)
+            transform.position = lastpos;
 
-        int targetWaypointIndex = 1;
-        Vector3 targetWaypoint = waypoints[targetWaypointIndex];
+
+        Vector3 targetWaypoint = waypoints[currentIndex];
         transform.LookAt(targetWaypoint);
 
         while (true)
@@ -77,8 +90,8 @@ public class Guard : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetWaypoint, speed * Time.deltaTime);
             if (transform.position == targetWaypoint)
             {
-                targetWaypointIndex = (targetWaypointIndex + 1) % waypoints.Length;
-                targetWaypoint = waypoints[targetWaypointIndex];
+                currentIndex = (currentIndex + 1) % waypoints.Length;
+                targetWaypoint = waypoints[currentIndex];
                 yield return new WaitForSeconds(waitTime);
                 yield return StartCoroutine(TurnToFace(targetWaypoint));
             }

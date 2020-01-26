@@ -43,8 +43,15 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, MaxDistance, CanMoveLayer))
             {
-                agent.SetDestination(hit.point);
-                DesiredDestination = hit.point;
+                if (hit.transform.gameObject.tag == "walkable")
+                {
+                    agent.SetDestination(hit.point);
+                    DesiredDestination = hit.point;
+                }
+                else
+                {
+                    return;
+                }
             }
         }
         if (agent.remainingDistance > agent.stoppingDistance)

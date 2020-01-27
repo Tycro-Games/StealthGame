@@ -19,16 +19,12 @@ public class EnemyShooting : Shooting
             AtackPlayer();
         }
         base.Update();
-
     }
     void AtackPlayer()
     {
         if (CheckToShoot(guard.player.position))
         {
-
-
             guard.enabled = false;
-
             ShouldRotate = true;
         }
     }

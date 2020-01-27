@@ -27,6 +27,7 @@ public class Shooting : MonoBehaviour
             Point = point;
             lastFirerate = Time.time + fireRate / 2;
             TimeBetweenShots = lastFirerate - Time.time;
+
             StartCoroutine(Atack());
             return true;//can shoot
         }
@@ -35,6 +36,7 @@ public class Shooting : MonoBehaviour
     }
     public virtual IEnumerator Atack()
     {
+        Debug.Log("Aiming");
         yield return new WaitForSeconds(TimeBetweenShots);
         Debug.Log(name + " atacked");
         //shooting and shit

@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
+using UnityStandardAssets.Characters.ThirdPerson;
 public class Guard : MonoBehaviour
 {
-
-    public float speed = 5;
+    public enum States { Idleing, Walking, Chasing, Shooting }
+    States currentState;
     public float waitTime = .3f;
-    public float turnSpeed = 90;
-
     public Light spotlight;
     public float viewDistance;
     public LayerMask viewMask;
@@ -17,44 +16,63 @@ public class Guard : MonoBehaviour
     public Transform pathHolder;
     [HideInInspector] public Transform player;
     Color originalSpotlightColour;
-    [HideInInspector] public Vector3[] waypoints;
+    private List<Vector3> waypoints = new List<Vector3>();
     int currentIndex = 0;
-    Vector3 lastpos = Vector3.zero;
-    void Start()
-    {
 
+    private ThirdPersonCharacter character;
+    NavMeshAgent agent;
+    Vector3 targetWaypoint;
+    void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        character = GetComponent<ThirdPersonCharacter>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         viewAngle = spotlight.spotAngle;
         originalSpotlightColour = spotlight.color;
-
-        waypoints = new Vector3[pathHolder.childCount];
-        for (int i = 0; i < waypoints.Length; i++)
+        for (int i = 0; i < pathHolder.childCount; i++)
         {
-            waypoints[i] = pathHolder.GetChild(i).position;
-            waypoints[i] = new Vector3(waypoints[i].x, transform.position.y, waypoints[i].z);
+            Vector3 pos = pathHolder.GetChild(i).position;
+            Vector3 posToAdd = new Vector3(pos.x, transform.position.y, pos.z);
+            waypoints.Add(posToAdd);
         }
 
-        StartCoroutine(FollowPath(waypoints));
+    }
+    void SetUp()
+    {
+        currentState = States.Idleing;
+        agent.enabled = true;
+        FollowPath();
     }
     private void OnEnable()
     {
-        if (player != null)
-            StartCoroutine(FollowPath(waypoints));
+        SetUp();
     }
     private void OnDisable()
     {
-        lastpos = transform.position;
         StopAllCoroutines();
+        character.StopMovement();
+        agent.enabled = false;
     }
     void Update()
     {
         if (CanSeePlayer())
         {
             spotlight.color = Color.red;
+            //check if the player is dead
         }
         else
         {
             spotlight.color = originalSpotlightColour;
+        }
+        if (agent.remainingDistance > agent.stoppingDistance)
+        {
+            character.Move(agent.desiredVelocity, false, false);
+
+        }
+        else
+        {
+            character.Move(Vector3.zero, false, false);
         }
     }
 
@@ -76,38 +94,33 @@ public class Guard : MonoBehaviour
         return false;
     }
 
-    IEnumerator FollowPath(Vector3[] waypoints)
+    void FollowPath()
     {
-        if (lastpos != Vector3.zero)
-            transform.position = lastpos;
-
-
-        Vector3 targetWaypoint = waypoints[currentIndex];
-        transform.LookAt(targetWaypoint);
-
-        while (true)
+        if (currentState == States.Idleing)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetWaypoint, speed * Time.deltaTime);
-            if (transform.position == targetWaypoint)
-            {
-                currentIndex = (currentIndex + 1) % waypoints.Length;
-                targetWaypoint = waypoints[currentIndex];
-                yield return new WaitForSeconds(waitTime);
-                yield return StartCoroutine(TurnToFace(targetWaypoint));
-            }
-            yield return null;
+            targetWaypoint = waypoints[currentIndex];
+            agent.SetDestination(targetWaypoint);
+            currentState = States.Walking;
+
+            StartCoroutine(ReachWaypoint());
+
         }
     }
-
-    IEnumerator TurnToFace(Vector3 lookTarget)
+    IEnumerator ReachWaypoint()
     {
-        Vector3 dirToLookTarget = (lookTarget - transform.position).normalized;
-        float targetAngle = 90 - Mathf.Atan2(dirToLookTarget.z, dirToLookTarget.x) * Mathf.Rad2Deg;
-
-        while (Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle)) > 0.05f)
+        while (currentState == States.Walking)
         {
-            float angle = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetAngle, turnSpeed * Time.deltaTime);
-            transform.eulerAngles = Vector3.up * angle;
+            Vector3 offset = agent.destination - transform.position;
+
+            if (offset.sqrMagnitude < agent.stoppingDistance)
+            {
+                currentIndex = (currentIndex + 1) % waypoints.Count;
+                currentState = States.Idleing;
+
+                yield return new WaitForSeconds(waitTime);
+                FollowPath();
+
+            }
             yield return null;
         }
     }

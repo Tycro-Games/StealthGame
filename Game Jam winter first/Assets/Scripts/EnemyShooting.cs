@@ -14,19 +14,27 @@ public class EnemyShooting : Shooting
     // Update is called once per frame
     public override void Update()
     {
-        if (guard.CanSeePlayer())
-        {
-            AtackPlayer();
-        }
+
         base.Update();
+    }
+    private void OnEnable()
+    {
+        Guard.OnGuardHasSpottedPlayer += AtackPlayer;
+    }
+    private void OnDisable()
+    {
+        Guard.OnGuardHasSpottedPlayer -= AtackPlayer;
     }
     void AtackPlayer()
     {
         if (CheckToShoot(guard.player.position))
         {
-            guard.enabled = false;
             ShouldRotate = true;
         }
+    }
+    public override IEnumerator Atack()
+    {
+        yield return new WaitForSeconds(TimeBetweenShots);//animations time
     }
     public override void Resume()
     {

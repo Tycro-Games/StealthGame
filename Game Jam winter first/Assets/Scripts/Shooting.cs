@@ -10,7 +10,7 @@ public class Shooting : MonoBehaviour
     public float MaxDistance = 100;
     public float fireRate = 1f;
     private float lastFirerate = 0;
-    private float TimeBetweenShots;
+    public float TimeBetweenShots;
     public float smoothRotation = 15f;
     protected Vector3 Point;
     public virtual void Update()
@@ -26,7 +26,6 @@ public class Shooting : MonoBehaviour
         {
             Point = point;
             lastFirerate = Time.time + fireRate / 2;
-            TimeBetweenShots = lastFirerate - Time.time;
 
             StartCoroutine(Atack());
             return true;//can shoot
@@ -36,12 +35,12 @@ public class Shooting : MonoBehaviour
     }
     public virtual IEnumerator Atack()
     {
-        Debug.Log("Aiming");
-        yield return new WaitForSeconds(TimeBetweenShots);
-        Debug.Log(name + " atacked");
-        //shooting and shit
-        Resume();
 
+        yield return new WaitForSeconds(TimeBetweenShots);//animations time
+
+        //shooting and shit
+
+        Resume();
     }
     public virtual void Resume()
     {

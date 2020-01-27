@@ -5,9 +5,12 @@ using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 public class Guard : MonoBehaviour
 {
-    public enum States { Idleing, Walking, Chasing, Shooting }
+    public enum States { Idleing, Walking, Finished, Shooting }
+    public static event System.Action OnGuardHasSpottedPlayer;
+
     States currentState;
     public float waitTime = .3f;
+    public float timeToSpotPlayer = 1f;
     public Light spotlight;
     public float viewDistance;
     public LayerMask viewMask;
@@ -18,7 +21,7 @@ public class Guard : MonoBehaviour
     Color originalSpotlightColour;
     private List<Vector3> waypoints = new List<Vector3>();
     int currentIndex = 0;
-
+    float playerVisibleTimer = 0;
     private ThirdPersonCharacter character;
     NavMeshAgent agent;
     Vector3 targetWaypoint;
@@ -48,32 +51,45 @@ public class Guard : MonoBehaviour
     {
         SetUp();
     }
-    private void OnDisable()
-    {
-        StopAllCoroutines();
-        character.StopMovement();
-        agent.enabled = false;
-    }
     void Update()
     {
+        if (currentState == States.Finished)
+        {
+            return;
+        }
+        if (currentState != States.Shooting)
+        {
+            if (agent.remainingDistance > agent.stoppingDistance)
+            {
+                character.Move(agent.desiredVelocity, false, false);
+
+            }
+            else
+            {
+
+                character.Move(Vector3.zero, false, false);
+            }
+        }
         if (CanSeePlayer())
         {
-            spotlight.color = Color.red;
-            //check if the player is dead
+            playerVisibleTimer += Time.deltaTime;
         }
         else
         {
-            spotlight.color = originalSpotlightColour;
+            playerVisibleTimer -= Time.deltaTime;
         }
-        if (agent.remainingDistance > agent.stoppingDistance)
-        {
-            character.Move(agent.desiredVelocity, false, false);
+        playerVisibleTimer = Mathf.Clamp(playerVisibleTimer, 0, timeToSpotPlayer);
+        spotlight.color = Color.Lerp(originalSpotlightColour, Color.red, playerVisibleTimer / timeToSpotPlayer);
 
-        }
-        else
+        if (playerVisibleTimer >= timeToSpotPlayer && currentState == States.Shooting)
         {
-            character.Move(Vector3.zero, false, false);
+            if (OnGuardHasSpottedPlayer != null)
+            {
+                currentState = States.Finished;
+                OnGuardHasSpottedPlayer();
+            }
         }
+
     }
 
 
@@ -87,6 +103,9 @@ public class Guard : MonoBehaviour
             {
                 if (!Physics.Linecast(transform.position, player.position, viewMask))
                 {
+                    currentState = States.Shooting;
+                    agent.enabled = false;
+                    character.StopMovement();
                     return true;
                 }
             }

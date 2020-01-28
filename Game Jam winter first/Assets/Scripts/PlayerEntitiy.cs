@@ -35,10 +35,14 @@ public class PlayerEntitiy : MonoBehaviour
         }
 
     }
-    void Die()
+    public void Deactivate()
     {
         playerShooting.enabled = false;
         playerController.enabled = false;
+    }
+    void Die()
+    {
+        Deactivate();
         Debug.Log("Player dies"); //animation coroutine
         Application.Quit();
     }

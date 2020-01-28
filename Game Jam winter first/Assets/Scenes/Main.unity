@@ -6412,5 +6412,10 @@ PrefabInstance:
       propertyPath: TimeBetweenShots
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7448386077543285901, guid: 46b740e52235a8744a8bf762f3aadb65,
+        type: 3}
+      propertyPath: smoothRotation
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46b740e52235a8744a8bf762f3aadb65, type: 3}

@@ -126,6 +126,7 @@ public class Guard : MonoBehaviour
                     currentState = States.Shooting;
                     character.StopMovement();
                     agent.enabled = false;
+                    player.GetComponent<PlayerEntitiy>().Deactivate();
                     return true;
                 }
             }

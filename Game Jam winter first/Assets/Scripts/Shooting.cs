@@ -17,7 +17,7 @@ public class Shooting : MonoBehaviour
     {
         if (ShouldRotate)
         {
-            Rotate(Point);
+            Rotate(Point, transform);
         }
     }
     public virtual bool CheckToShoot(Vector3 point)
@@ -46,11 +46,11 @@ public class Shooting : MonoBehaviour
     {
         ShouldRotate = false;
     }
-    public virtual void Rotate(Vector3 target)
+    public static void Rotate(Vector3 target, Transform transform)
     {
         Vector3 offset = target - transform.position;
         Quaternion desiredRot = Quaternion.LookRotation(offset);
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRot, smoothRotation);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRot, 15);
     }
 }

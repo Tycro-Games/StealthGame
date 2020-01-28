@@ -14,8 +14,8 @@ public class EnemyShooting : Shooting
     // Update is called once per frame
     public override void Update()
     {
-
         base.Update();
+
     }
     private void OnEnable()
     {
@@ -36,10 +36,5 @@ public class EnemyShooting : Shooting
     {
         yield return new WaitForSeconds(TimeBetweenShots);//animations time
     }
-    public override void Resume()
-    {
-        base.Resume();
-        guard.enabled = true;
 
-    }
 }

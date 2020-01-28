@@ -9,11 +9,14 @@ public class PlayerEntitiy : MonoBehaviour
     [Range(minTemp, maxTemp)]
     public float Temperature = 2;
     public float TimeBetweenTemperatureChecks = .5f;
+    PlayerController playerController;
+    PlayerShooting playerShooting;
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(CheckTemperature());
-
+        playerShooting = GetComponent<PlayerShooting>();
+        playerController = GetComponent<PlayerController>();
     }
     private void OnEnable()
     {
@@ -34,6 +37,8 @@ public class PlayerEntitiy : MonoBehaviour
     }
     void Die()
     {
+        playerShooting.enabled = false;
+        playerController.enabled = false;
         Debug.Log("Player dies"); //animation coroutine
         Application.Quit();
     }

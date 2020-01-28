@@ -11,7 +11,7 @@ public class Guard : MonoBehaviour
     States currentState;
     public float waitTime = .3f;
     public float timeToSpotPlayer = 1f;
-    public Light spotlight;
+    Light spotlight;
     public float viewDistance;
     public LayerMask viewMask;
     float viewAngle;
@@ -19,6 +19,8 @@ public class Guard : MonoBehaviour
     public Transform pathHolder;
     [HideInInspector] public Transform player;
     Color originalSpotlightColour;
+    public Color AlertedColor;
+    public float AlertedAngle = 180;
     private List<Vector3> waypoints = new List<Vector3>();
     int currentIndex = 0;
     float playerVisibleTimer = 0;
@@ -31,14 +33,21 @@ public class Guard : MonoBehaviour
         agent.updateRotation = false;
         character = GetComponent<ThirdPersonCharacter>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        viewAngle = spotlight.spotAngle;
-        originalSpotlightColour = spotlight.color;
+
+
         for (int i = 0; i < pathHolder.childCount; i++)
         {
             Vector3 pos = pathHolder.GetChild(i).position;
             Vector3 posToAdd = new Vector3(pos.x, transform.position.y, pos.z);
             waypoints.Add(posToAdd);
         }
+
+    }
+    private void Start()
+    {
+        spotlight = GetComponentInChildren<Light>();
+        viewAngle = spotlight.spotAngle;
+        originalSpotlightColour = spotlight.color;
 
     }
     void SetUp()
@@ -70,31 +79,42 @@ public class Guard : MonoBehaviour
                 character.Move(Vector3.zero, false, false);
             }
         }
-        if (CanSeePlayer())
+
+        if (CanSeePlayer())//animate spotlight
         {
+            Shooting.Rotate(player.position, transform);
             playerVisibleTimer += Time.deltaTime;
+
         }
         else
-        {
             playerVisibleTimer -= Time.deltaTime;
-        }
+
         playerVisibleTimer = Mathf.Clamp(playerVisibleTimer, 0, timeToSpotPlayer);
         spotlight.color = Color.Lerp(originalSpotlightColour, Color.red, playerVisibleTimer / timeToSpotPlayer);
 
-        if (playerVisibleTimer >= timeToSpotPlayer && currentState == States.Shooting)
-        {
+
+        if (playerVisibleTimer >= timeToSpotPlayer)
             if (OnGuardHasSpottedPlayer != null)
             {
                 currentState = States.Finished;
                 OnGuardHasSpottedPlayer();
             }
-        }
+
 
     }
 
+    public void Alerted()
+    {
+        viewAngle = AlertedAngle;
+        spotlight.spotAngle = viewAngle;
+        spotlight.color = AlertedColor;
+        originalSpotlightColour = spotlight.color;
 
+    }
     public bool CanSeePlayer()
     {
+        if (currentState == States.Shooting)
+            return true;
         if (Vector3.Distance(transform.position, player.position) < viewDistance)
         {
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
@@ -104,13 +124,30 @@ public class Guard : MonoBehaviour
                 if (!Physics.Linecast(transform.position, player.position, viewMask))
                 {
                     currentState = States.Shooting;
-                    agent.enabled = false;
                     character.StopMovement();
+                    agent.enabled = false;
                     return true;
                 }
             }
         }
         return false;
+    }
+    public void CanSeeDownAlly()//for dedecting fallen comrades
+    {
+
+        if (Vector3.Distance(transform.position, player.position) < viewDistance)
+        {
+            Vector3 dirToPlayer = (player.position - transform.position).normalized;
+            float angleBetweenGuardAndPlayer = Vector3.Angle(transform.forward, dirToPlayer);
+            if (angleBetweenGuardAndPlayer < viewAngle / 2f)
+            {
+                if (!Physics.Linecast(transform.position, player.position, viewMask))
+                {
+                    Alerted();
+                }
+            }
+        }
+
     }
 
     void FollowPath()

@@ -91,11 +91,18 @@ public class Guard : MonoBehaviour
             Vector3 offset = player.position - transform.position;
             if (offset.sqrMagnitude <= RangeToSee)
             {
-                currentState = States.Finished;
-                OnGuardHasSpottedPlayer();
+                RotateToTarget(true);
             }
         }
-        if (CanSeePlayer())//animate spotlight
+        else
+            RotateToTarget();
+
+
+
+    }
+    void RotateToTarget(bool Rotate = false)
+    {
+        if (CanSeePlayer() || Rotate)//animate spotlight
         {
             Shooting.Rotate(player.position, transform);
             playerVisibleTimer += Time.deltaTime;
@@ -114,10 +121,7 @@ public class Guard : MonoBehaviour
                 currentState = States.Finished;
                 OnGuardHasSpottedPlayer();
             }
-
-
     }
-
     public IEnumerator Alerted(Vector3 pos)
     {
         float speed = agent.speed;

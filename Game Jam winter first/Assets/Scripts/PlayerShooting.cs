@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerShooting : Shooting
 {
     public LayerMask CanAtackLayer;
+    public delegate IEnumerator OnAlert(Vector3 pos);
+    public static event OnAlert onAlert;
     Camera cam;
     PlayerController playerController;
     private void Start()
@@ -22,6 +24,10 @@ public class PlayerShooting : Shooting
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, MaxDistance, CanAtackLayer))
             {
+                if (!PlayerEnt.InStrom && onAlert != null)
+                {
+                    StartCoroutine(onAlert(transform.position));
+                }
                 Shoot(hit.point);
             }
         }

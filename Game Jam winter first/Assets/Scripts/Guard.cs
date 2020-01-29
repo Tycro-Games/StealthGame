@@ -8,11 +8,13 @@ public class Guard : MonoBehaviour
     public enum States { Idleing, Walking, Finished, Shooting }
     public static event System.Action OnGuardHasSpottedPlayer;
 
+
     States currentState;
     public float waitTime = .3f;
     public float timeToSpotPlayer = 1f;
     Light spotlight;
     public float viewDistance;
+    public float RangeToSee;
     public LayerMask viewMask;
     float viewAngle;
 
@@ -59,6 +61,11 @@ public class Guard : MonoBehaviour
     private void OnEnable()
     {
         SetUp();
+        PlayerShooting.onAlert += Alerted;
+    }
+    private void OnDisable()
+    {
+        PlayerShooting.onAlert -= Alerted;
     }
     void Update()
     {
@@ -79,7 +86,15 @@ public class Guard : MonoBehaviour
                 character.Move(Vector3.zero, false, false);
             }
         }
-
+        if (currentState != States.Shooting)
+        {
+            Vector3 offset = player.position - transform.position;
+            if (offset.sqrMagnitude <= RangeToSee)
+            {
+                currentState = States.Finished;
+                OnGuardHasSpottedPlayer();
+            }
+        }
         if (CanSeePlayer())//animate spotlight
         {
             Shooting.Rotate(player.position, transform);
@@ -103,8 +118,28 @@ public class Guard : MonoBehaviour
 
     }
 
+    public IEnumerator Alerted(Vector3 pos)
+    {
+        float speed = agent.speed;
+        agent.speed = 1;
+
+        agent.SetDestination(pos);
+
+        viewAngle = AlertedAngle;
+        spotlight.spotAngle = viewAngle;
+        spotlight.color = AlertedColor;
+        originalSpotlightColour = spotlight.color;
+        currentState = States.Walking;
+        StopCoroutine(ReachWaypoint());
+        yield return StartCoroutine(ReachWaypoint(pos));
+        agent.speed = speed;
+        FollowPath();
+
+
+    }
     public void Alerted()
     {
+
         viewAngle = AlertedAngle;
         spotlight.spotAngle = viewAngle;
         spotlight.color = AlertedColor;
@@ -124,9 +159,12 @@ public class Guard : MonoBehaviour
                 if (!Physics.Linecast(transform.position, player.position, viewMask))
                 {
                     currentState = States.Shooting;
+                    StopAllCoroutines();
                     character.StopMovement();
                     agent.enabled = false;
-                    player.GetComponent<PlayerEntitiy>().Deactivate();
+
+                    player.GetComponent<PlayerEnt>().Deactivate();
+
                     return true;
                 }
             }
@@ -176,6 +214,21 @@ public class Guard : MonoBehaviour
 
                 yield return new WaitForSeconds(waitTime);
                 FollowPath();
+
+            }
+            yield return null;
+        }
+    }
+    IEnumerator ReachWaypoint(Vector3 pos)
+    {
+        while (currentState == States.Walking)
+        {
+            Vector3 offset = agent.destination - transform.position;
+
+            if (offset.sqrMagnitude < agent.stoppingDistance)
+            {
+                currentState = States.Idleing;
+                yield return new WaitForSeconds(waitTime);
 
             }
             yield return null;

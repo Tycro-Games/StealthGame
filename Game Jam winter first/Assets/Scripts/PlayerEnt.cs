@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerEntitiy : MonoBehaviour
+using UnityEngine.SceneManagement;
+public class PlayerEnt : MonoBehaviour
 {
     public const float minTemp = -30;
     public const float maxTemp = 2;
@@ -11,6 +11,7 @@ public class PlayerEntitiy : MonoBehaviour
     public float TimeBetweenTemperatureChecks = .5f;
     PlayerController playerController;
     PlayerShooting playerShooting;
+    public static bool InStrom = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +35,7 @@ public class PlayerEntitiy : MonoBehaviour
             yield return null;
         }
 
+
     }
     public void Deactivate()
     {
@@ -44,7 +46,21 @@ public class PlayerEntitiy : MonoBehaviour
     {
         Deactivate();
         Debug.Log("Player dies"); //animation coroutine
-        Application.Quit();
+        SceneManager.LoadScene(0);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Shelter")
+        {
+            InStrom = false;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Shelter")
+        {
+            InStrom = true;
+        }
     }
 
 }

@@ -5,10 +5,10 @@ using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 public class Guard : MonoBehaviour
 {
+    [SerializeField]
+    public Color ColorToID;
     public enum States { Idleing, Walking, Finished, Shooting }
     public static event System.Action OnGuardHasSpottedPlayer;
-
-    [SerializeField]
     States currentState;
     public float waitTime = .3f;
     public float timeToSpotPlayer = 1f;
@@ -35,6 +35,7 @@ public class Guard : MonoBehaviour
     Vector3 targetWaypoint;
     void Awake()
     {
+        ColorToID = Random.ColorHSV();
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         character = GetComponent<ThirdPersonCharacter>();
@@ -249,18 +250,20 @@ public class Guard : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        Gizmos.color = ColorToID;
         Vector3 startPosition = pathHolder.GetChild(0).position;
         Vector3 previousPosition = startPosition;
 
         foreach (Transform waypoint in pathHolder)
         {
+
             Gizmos.DrawSphere(waypoint.position, .3f);
             Gizmos.DrawLine(previousPosition, waypoint.position);
             previousPosition = waypoint.position;
         }
         Gizmos.DrawLine(previousPosition, startPosition);
 
-        Gizmos.color = Color.red;
+
         Gizmos.DrawRay(transform.position, transform.forward * viewDistance);
         Gizmos.DrawWireSphere(transform.position, RangeToSee);
     }

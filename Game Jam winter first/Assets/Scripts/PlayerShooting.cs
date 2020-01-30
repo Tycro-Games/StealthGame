@@ -17,9 +17,10 @@ public class PlayerShooting : Shooting
     public override void Update()
     {
         base.Update();
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && playerController.enabled)
         {
-            playerController.enabled = false;
+
+
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, MaxDistance, CanAtackLayer))
@@ -28,7 +29,11 @@ public class PlayerShooting : Shooting
                 {
                     StartCoroutine(onAlert(transform.position));
                 }
-                Shoot(hit.point);
+                if (CheckToShoot(hit.point))
+                {
+                    playerController.StopDestination();
+                    playerController.enabled = false;
+                }
             }
         }
 
@@ -37,13 +42,9 @@ public class PlayerShooting : Shooting
     {
         base.Resume();
         playerController.enabled = true;
+        playerController.ResumeDestination();
+
 
     }
-    void Shoot(Vector3 point)
-    {
-        if (CheckToShoot(point))
-        {
-            ShouldRotate = true;//rotate to target
-        }
-    }
+
 }

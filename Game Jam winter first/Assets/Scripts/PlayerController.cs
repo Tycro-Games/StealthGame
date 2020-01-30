@@ -6,42 +6,48 @@ using UnityStandardAssets.Characters.ThirdPerson;
 public class PlayerController : MonoBehaviour
 {
     Camera cam;
-    public LayerMask CanMoveLayer;
-    public float MaxDistance = 100;
+    [SerializeField]
+    private float MaxDistance = 100;
+    [SerializeField]
     NavMeshAgent agent;
     ThirdPersonCharacter character;
 
     Vector3 DesiredDestination;
-    void Start()
+    private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        cam = Camera.main;
         character = GetComponent<ThirdPersonCharacter>();
+    }
+    void Start()
+    {
+        DesiredDestination = transform.position;
+        cam = Camera.main;
+
+
         agent.updateRotation = false;
     }
-    private void OnDisable()
+    public void StopDestination()
     {
-
         character.StopMovement();
         agent.enabled = false;
     }
-    private void OnEnable()
+    public void ResumeDestination()
     {
-        if (agent != null)
-        {
-            agent.enabled = true;
-            agent.destination = DesiredDestination;//resume destination
-        }
+        agent.enabled = true;
+        agent.destination = DesiredDestination;//resume destination
     }
+
     // Update is called once per frame
     void Update()
     {
+        if (agent.enabled == false)
+            return;
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, MaxDistance, CanMoveLayer))
+            if (Physics.Raycast(ray, out hit, MaxDistance))
             {
                 if (hit.transform.gameObject.tag == "walkable")
                 {

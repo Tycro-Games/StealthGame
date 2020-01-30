@@ -1182,10 +1182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61b1bdb83accb74696908b02692779a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanMoveLayer:
-    serializedVersion: 2
-    m_Bits: 4294967295
   MaxDistance: 100
+  agent: {fileID: 0}
 --- !u!114 &6777650445523587763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,7 +1198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxDistance: 100
   fireRate: 1
-  TimeBetweenShots: 0.2
+  TimeBetweenShots: 0.3
   smoothRotation: 15
   CanAtackLayer:
     serializedVersion: 2

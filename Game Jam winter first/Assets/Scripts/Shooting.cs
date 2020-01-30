@@ -20,7 +20,7 @@ public class Shooting : MonoBehaviour
             Rotate(Point, transform);
         }
     }
-    public virtual bool CheckToShoot(Vector3 point)
+    public bool CheckToShoot(Vector3 point)
     {
         if (Time.time > lastFirerate)
         {
@@ -33,9 +33,9 @@ public class Shooting : MonoBehaviour
         return false;
 
     }
-    public virtual IEnumerator Atack()
+    private IEnumerator Atack()
     {
-
+        ShouldRotate = true;
         yield return new WaitForSeconds(TimeBetweenShots);//animations time
 
         //shooting and shit

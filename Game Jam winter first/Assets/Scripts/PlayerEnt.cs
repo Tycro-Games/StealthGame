@@ -40,7 +40,7 @@ public class PlayerEnt : MonoBehaviour
     public void Deactivate()
     {
         playerShooting.enabled = false;
-        playerController.enabled = false;
+        playerController.StopDestination();
     }
     void Die()
     {
@@ -52,6 +52,7 @@ public class PlayerEnt : MonoBehaviour
     {
         if (other.tag == "Shelter")
         {
+            Debug.Log("Sheltered");
             InStrom = false;
         }
     }
@@ -59,6 +60,7 @@ public class PlayerEnt : MonoBehaviour
     {
         if (other.tag == "Shelter")
         {
+            Debug.Log("not Sheltered");
             InStrom = true;
         }
     }

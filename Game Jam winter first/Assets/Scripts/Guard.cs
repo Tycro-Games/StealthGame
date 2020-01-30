@@ -8,21 +8,25 @@ public class Guard : MonoBehaviour
     public enum States { Idleing, Walking, Finished, Shooting }
     public static event System.Action OnGuardHasSpottedPlayer;
 
-
+    [SerializeField]
     States currentState;
     public float waitTime = .3f;
     public float timeToSpotPlayer = 1f;
     Light spotlight;
-    public float viewDistance;
-    public float RangeToSee;
+    [SerializeField]
+    private float viewDistance = 10f;
+    [SerializeField]
+    private float RangeToSee = 3f;
     public LayerMask viewMask;
     float viewAngle;
-
-    public Transform pathHolder;
+    [SerializeField]
+    private Transform pathHolder = null;
     [HideInInspector] public Transform player;
     Color originalSpotlightColour;
-    public Color AlertedColor;
-    public float AlertedAngle = 180;
+    [SerializeField]
+    private Color AlertedColor;
+    [SerializeField]
+    private float AlertedAngle = 180;
     private List<Vector3> waypoints = new List<Vector3>();
     int currentIndex = 0;
     float playerVisibleTimer = 0;
@@ -86,23 +90,15 @@ public class Guard : MonoBehaviour
                 character.Move(Vector3.zero, false, false);
             }
         }
-        if (currentState != States.Shooting)
-        {
-            Vector3 offset = player.position - transform.position;
-            if (offset.sqrMagnitude <= RangeToSee)
-            {
-                RotateToTarget(true);
-            }
-        }
-        else
-            RotateToTarget();
+        RotateToTarget();
+
 
 
 
     }
-    void RotateToTarget(bool Rotate = false)
+    void RotateToTarget()
     {
-        if (CanSeePlayer() || Rotate)//animate spotlight
+        if (CanSeePlayer())//animate spotlight
         {
             Shooting.Rotate(player.position, transform);
             playerVisibleTimer += Time.deltaTime;
@@ -154,26 +150,38 @@ public class Guard : MonoBehaviour
     {
         if (currentState == States.Shooting)
             return true;
-        if (Vector3.Distance(transform.position, player.position) < viewDistance)
+
+        Vector3 distance = player.position - transform.position;
+        if (distance.sqrMagnitude < RangeToSee * RangeToSee)
         {
+            DeactivatePlayer();
+            return true;
+        }
+        if (distance.sqrMagnitude < viewDistance * viewDistance)
+        {
+
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
             float angleBetweenGuardAndPlayer = Vector3.Angle(transform.forward, dirToPlayer);
             if (angleBetweenGuardAndPlayer < viewAngle / 2f)
             {
                 if (!Physics.Linecast(transform.position, player.position, viewMask))
                 {
-                    currentState = States.Shooting;
-                    StopAllCoroutines();
-                    character.StopMovement();
-                    agent.enabled = false;
-
-                    player.GetComponent<PlayerEnt>().Deactivate();
+                    DeactivatePlayer();
 
                     return true;
                 }
             }
         }
         return false;
+    }
+    void DeactivatePlayer()
+    {
+        currentState = States.Shooting;
+        StopAllCoroutines();
+        character.StopMovement();
+        agent.enabled = false;
+
+        player.GetComponent<PlayerEnt>().Deactivate();
     }
     public void CanSeeDownAlly()//for dedecting fallen comrades
     {
@@ -254,6 +262,7 @@ public class Guard : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * viewDistance);
+        Gizmos.DrawWireSphere(transform.position, RangeToSee);
     }
 
 }

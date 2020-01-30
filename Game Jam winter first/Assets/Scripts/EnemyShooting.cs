@@ -32,9 +32,6 @@ public class EnemyShooting : Shooting
             ShouldRotate = true;
         }
     }
-    public override IEnumerator Atack()
-    {
-        yield return new WaitForSeconds(TimeBetweenShots);//animations time
-    }
+
 
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
-public class Guard : MonoBehaviour
+public class Guard : MonoBehaviour, ILiving
 {
     [SerializeField]
     public Color ColorToID;
@@ -56,6 +56,10 @@ public class Guard : MonoBehaviour
         viewAngle = spotlight.spotAngle;
         originalSpotlightColour = spotlight.color;
 
+    }
+    public void Die()
+    {
+        Destroy(gameObject);
     }
     void SetUp()
     {
@@ -127,7 +131,7 @@ public class Guard : MonoBehaviour
         agent.SetDestination(pos);
 
         viewAngle = AlertedAngle;
-        spotlight.spotAngle = viewAngle;
+        spotlight.spotAngle = 100;
         spotlight.color = AlertedColor;
         originalSpotlightColour = spotlight.color;
         currentState = States.Walking;
@@ -155,7 +159,8 @@ public class Guard : MonoBehaviour
         Vector3 distance = player.position - transform.position;
         if (distance.sqrMagnitude < RangeToSee * RangeToSee)
         {
-            DeactivatePlayer();
+            if (agent.enabled)
+                DeactivatePlayer();
             return true;
         }
         if (distance.sqrMagnitude < viewDistance * viewDistance)
@@ -167,7 +172,8 @@ public class Guard : MonoBehaviour
             {
                 if (!Physics.Linecast(transform.position, player.position, viewMask))
                 {
-                    DeactivatePlayer();
+                    if (agent.enabled)
+                        DeactivatePlayer();
 
                     return true;
                 }
@@ -181,8 +187,8 @@ public class Guard : MonoBehaviour
         StopAllCoroutines();
         character.StopMovement();
         agent.enabled = false;
-
         player.GetComponent<PlayerEnt>().Deactivate();
+
     }
     public void CanSeeDownAlly()//for dedecting fallen comrades
     {
@@ -248,7 +254,8 @@ public class Guard : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
+
     {
         Gizmos.color = ColorToID;
         Vector3 startPosition = pathHolder.GetChild(0).position;

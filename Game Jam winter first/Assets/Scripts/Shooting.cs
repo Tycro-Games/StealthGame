@@ -6,12 +6,19 @@ public class Shooting : MonoBehaviour
 {
     protected bool ShouldRotate = false;
     [Header("Shooting settings")]
-
-    public float MaxDistance = 100;
-    public float fireRate = 1f;
+    [SerializeField]
+    private GameObject bullet = null;
+    [SerializeField]
+    private Transform ShootingPos = null;
+    [SerializeField]
+    protected float MaxDistance = 100;
+    [SerializeField]
+    private float fireRate = 1f;
+    [SerializeField]
     private float lastFirerate = 0;
-    public float TimeBetweenShots;
-    public float smoothRotation = 15f;
+    [SerializeField]
+    private float TimeBetweenShots = 0;
+
     protected Vector3 Point;
     public virtual void Update()
     {
@@ -37,8 +44,8 @@ public class Shooting : MonoBehaviour
     {
         ShouldRotate = true;
         yield return new WaitForSeconds(TimeBetweenShots);//animations time
+        Instantiate(bullet, ShootingPos.position, transform.rotation);
 
-        //shooting and shit
 
         Resume();
     }

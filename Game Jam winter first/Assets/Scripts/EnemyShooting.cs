@@ -27,10 +27,9 @@ public class EnemyShooting : Shooting
     }
     void AtackPlayer()
     {
-        if (CheckToShoot(guard.player.position))
-        {
-            ShouldRotate = true;
-        }
+        CheckToShoot(guard.player.position);
+
+
     }
 
 

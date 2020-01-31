@@ -8,10 +8,10 @@ public class ShelterCheck : MonoBehaviour
     [SerializeField]
     private Vector3 ray;
     [SerializeField]
-    LayerMask shelterLayer;
+    private LayerMask shelterLayer = 0;
     RaycastHit hit;
     [SerializeField]
-    float maxDistance;
+    private float maxDistance = 5;
     private void Start()
     {
         ray = ray.normalized;

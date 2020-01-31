@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class PlayerEnt : MonoBehaviour
+public class PlayerEnt : MonoBehaviour, ILiving
 {
     [SerializeField]
     const float minTemp = -30;
@@ -28,18 +28,8 @@ public class PlayerEnt : MonoBehaviour
         playerShooting = GetComponent<PlayerShooting>();
         playerController = GetComponent<PlayerController>();
     }
-    private void OnEnable()
-    {
-        Guard.OnGuardHasSpottedPlayer += Die;
-    }
-    private void OnDisable()
-    {
-        Guard.OnGuardHasSpottedPlayer -= Die;
-    }
-    private void Update()
-    {
 
-    }
+
     IEnumerator CheckTemperature()
     {
 
@@ -65,10 +55,10 @@ public class PlayerEnt : MonoBehaviour
     }
     public void Deactivate()
     {
-        playerShooting.enabled = false;
+
         playerController.StopDestination();
     }
-    void Die()
+    public void Die()
     {
         Deactivate();
         Debug.Log("Player dies"); //animation coroutine

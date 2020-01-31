@@ -28,8 +28,10 @@ public class PlayerController : MonoBehaviour
     }
     public void StopDestination()
     {
+
         character.StopMovement();
         agent.enabled = false;
+        this.enabled = false;
     }
     public void ResumeDestination()
     {

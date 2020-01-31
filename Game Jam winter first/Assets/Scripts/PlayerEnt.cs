@@ -4,13 +4,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PlayerEnt : MonoBehaviour
 {
-    public const float minTemp = -30;
-    public const float maxTemp = 2;
+    [SerializeField]
+    const float minTemp = -30;
+    [SerializeField]
+    const float maxTemp = 2;
     [Range(minTemp, maxTemp)]
-    public float Temperature = 2;
-    public float TimeBetweenTemperatureChecks = .5f;
+    [SerializeField]
+    private float Temperature = 2;
+    [SerializeField]
+    private float TimeBetweenTemperatureChecks = .1f;
+    [SerializeField]
+    private float RateDrop = 0.2f;
+    [SerializeField]
+    private float RateRise = 0.2f;
     PlayerController playerController;
     PlayerShooting playerShooting;
+    ShelterCheck shelter;
     public static bool InStrom = true;
     // Start is called before the first frame update
     void Start()
@@ -27,13 +36,30 @@ public class PlayerEnt : MonoBehaviour
     {
         Guard.OnGuardHasSpottedPlayer -= Die;
     }
+    private void Update()
+    {
+
+    }
     IEnumerator CheckTemperature()
     {
+
         while (Temperature > minTemp)
         {
+            if (InStrom)
+            {
+                Temperature -= RateDrop;
+            }
+            else
+            {
+                if (Temperature < maxTemp)
+                    Temperature += RateRise;
+            }
             yield return new WaitForSeconds(TimeBetweenTemperatureChecks);
+
             yield return null;
         }
+        Debug.Log("Player freezes");
+        Die();
 
 
     }
@@ -48,21 +74,6 @@ public class PlayerEnt : MonoBehaviour
         Debug.Log("Player dies"); //animation coroutine
         SceneManager.LoadScene(0);
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Shelter")
-        {
-            Debug.Log("Sheltered");
-            InStrom = false;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Shelter")
-        {
-            Debug.Log("not Sheltered");
-            InStrom = true;
-        }
-    }
+
 
 }

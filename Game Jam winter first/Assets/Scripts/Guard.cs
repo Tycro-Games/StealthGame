@@ -24,7 +24,7 @@ public class Guard : MonoBehaviour
     [HideInInspector] public Transform player;
     Color originalSpotlightColour;
     [SerializeField]
-    private Color AlertedColor;
+    private Color AlertedColor = Color.yellow;
     [SerializeField]
     private float AlertedAngle = 180;
     private List<Vector3> waypoints = new List<Vector3>();

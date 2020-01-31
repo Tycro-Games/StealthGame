@@ -814,6 +814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1629880909}
   - component: {fileID: 1629880910}
+  - component: {fileID: 1667275898}
   m_Layer: 9
   m_Name: Spot Light
   m_TagString: Untagged
@@ -829,7 +830,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629880908}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.76, z: -0.58}
+  m_LocalPosition: {x: 0, y: 1.76, z: -1.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6124713691244840236}
@@ -846,20 +847,20 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.96448624, b: 0, a: 1}
-  m_Intensity: 48.7
-  m_Range: 9.58
-  m_SpotAngle: 130.6484
-  m_InnerSpotAngle: 48.64839
+  m_Color: {r: 0.45121074, g: 1, b: 0, a: 1}
+  m_Intensity: 380.3
+  m_Range: 17.6
+  m_SpotAngle: 90
+  m_InnerSpotAngle: 0
   m_CookieSize: 10
   m_Shadows:
     m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 5.15
+    m_Bias: 0.25
+    m_NormalBias: 3
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -896,6 +897,19 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &1667275898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629880908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UsePipelineSettings: 0
 --- !u!1 &1871186822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,7 +1200,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!136 &7448386077543285904
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1232,16 +1246,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb268c8fa5b10f49b6c5a38a124762d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColorToID: {r: 0.053387742, g: 0.6695754, b: 0.6503633, a: 1}
   waitTime: 1.5
   timeToSpotPlayer: 0.5
-  viewDistance: 10
-  RangeToSee: 0
+  viewDistance: 8
+  RangeToSee: 3
   viewMask:
     serializedVersion: 2
     m_Bits: 1024
   pathHolder: {fileID: 0}
   player: {fileID: 0}
-  AlertedColor: {r: 1, g: 0.55344284, b: 0, a: 1}
+  AlertedColor: {r: 1, g: 0.9642606, b: 0, a: 1}
   AlertedAngle: 180
 --- !u!114 &7448386077543285901
 MonoBehaviour:
@@ -1276,7 +1291,7 @@ MonoBehaviour:
   m_JumpPower: 6
   m_GravityMultiplier: 2
   m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 0.6
+  m_MoveSpeedMultiplier: 1
   m_AnimSpeedMultiplier: 1
   m_GroundCheckDistance: 0.2
 --- !u!195 &7448386077543285906

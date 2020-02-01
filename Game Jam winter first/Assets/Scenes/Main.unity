@@ -6036,7 +6036,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  m_CustomBlends: {fileID: 11400000, guid: 1780b7e5a02602541a68c202d8319844, type: 2}
+  m_CustomBlends: {fileID: 0}
   m_CameraCutEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6409,7 +6409,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454726289}
-  m_LocalRotation: {x: -0.16937277, y: 0.13295658, z: -0.02308005, w: -0.97626984}
+  m_LocalRotation: {x: -0.16937275, y: 0.1329566, z: -0.02308005, w: -0.97626984}
   m_LocalPosition: {x: 0, y: 0, z: -15.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6982,11 +6982,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6777650445523587767, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
-        type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: 5472b678fde56be459bf8c97a862766b, type: 3}
     - target: {fileID: 6777650445523587771, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
         type: 3}
       propertyPath: m_Name

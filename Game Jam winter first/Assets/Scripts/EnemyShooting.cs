@@ -6,10 +6,11 @@ public class EnemyShooting : Shooting
 {
     Guard guard;
     // Start is called before the first frame update
+
     public override void Start()
     {
         base.Start();
-        guard = GetComponent<Guard>();
+
     }
 
     // Update is called once per frame
@@ -20,11 +21,12 @@ public class EnemyShooting : Shooting
     }
     private void OnEnable()
     {
-        Guard.OnGuardHasSpottedPlayer += AtackPlayer;
+        guard = GetComponent<Guard>();
+        guard.executePlayer += AtackPlayer;
     }
     private void OnDisable()
     {
-        Guard.OnGuardHasSpottedPlayer -= AtackPlayer;
+        guard.executePlayer -= AtackPlayer;
     }
     void AtackPlayer()
     {

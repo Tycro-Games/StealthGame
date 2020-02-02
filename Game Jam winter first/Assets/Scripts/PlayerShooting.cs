@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerShooting : Shooting
 {
     public LayerMask CanAtackLayer;
-    public delegate IEnumerator OnAlert(Vector3 pos);
+    public delegate void OnAlert(Vector3 pos);
     public static event OnAlert onAlert;
     Camera cam;
     PlayerController playerController;
@@ -29,7 +29,7 @@ public class PlayerShooting : Shooting
             {
                 if (!PlayerEnt.InStrom && onAlert != null)
                 {
-                    StartCoroutine(onAlert(transform.position));
+                    onAlert(transform.position);
                 }
                 if (CheckToShoot(hit.point))
                 {
@@ -42,10 +42,12 @@ public class PlayerShooting : Shooting
     }
     public override void Resume()
     {
-        base.Resume();
-        playerController.enabled = true;
-        playerController.ResumeDestination();
-
+        if (PlayerEnt.Imobile != true)
+        {
+            base.Resume();
+            playerController.enabled = true;
+            playerController.ResumeDestination();
+        }
 
     }
 

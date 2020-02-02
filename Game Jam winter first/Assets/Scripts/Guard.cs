@@ -5,11 +5,13 @@ using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 public class Guard : MonoBehaviour, ILiving
 {
+
     [SerializeField]
     public Color ColorToID;
-    public enum States { Idleing, Walking, Finished, Shooting }
-    public static event System.Action OnGuardHasSpottedPlayer;
-    States currentState;
+    public enum States { Idleing, Walking, Shooting, Finished }
+    public delegate void ExecutePlayer();
+    public event ExecutePlayer executePlayer;
+    public States currentState;
     public float waitTime = .3f;
     public float timeToSpotPlayer = 1f;
     Light spotlight;
@@ -17,7 +19,10 @@ public class Guard : MonoBehaviour, ILiving
     private float viewDistance = 10f;
     [SerializeField]
     private float RangeToSee = 3f;
-    public LayerMask viewMask;
+    [SerializeField]
+    private LayerMask viewMask = 0;
+    [SerializeField]
+    private LayerMask DeadEnemies = 0;
     float viewAngle;
     [SerializeField]
     private Transform pathHolder = null;
@@ -33,6 +38,7 @@ public class Guard : MonoBehaviour, ILiving
     private ThirdPersonCharacter character;
     NavMeshAgent agent;
     Vector3 targetWaypoint;
+    private bool alerted = false;
     void Awake()
     {
         ColorToID = Random.ColorHSV();
@@ -57,25 +63,30 @@ public class Guard : MonoBehaviour, ILiving
         originalSpotlightColour = spotlight.color;
 
     }
-    public void Die()
-    {
-        Destroy(gameObject);
-    }
+
     void SetUp()
     {
         currentState = States.Idleing;
         agent.enabled = true;
         FollowPath();
     }
+    public void Die()
+    {
+
+        character.Die();
+        spotlight.enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Collider>().isTrigger = true;
+        currentState = States.Finished;
+        agent.enabled = false;
+        GetComponent<DeadEnemy>().enabled = true;
+        this.enabled = false;
+    }
     private void OnEnable()
     {
         SetUp();
-        PlayerShooting.onAlert += Alerted;
     }
-    private void OnDisable()
-    {
-        PlayerShooting.onAlert -= Alerted;
-    }
+
     void Update()
     {
         if (currentState == States.Finished)
@@ -96,7 +107,8 @@ public class Guard : MonoBehaviour, ILiving
             }
         }
         RotateToTarget();
-
+        if (!alerted)
+            CanSeeDownAlly();
 
 
 
@@ -117,14 +129,17 @@ public class Guard : MonoBehaviour, ILiving
 
 
         if (playerVisibleTimer >= timeToSpotPlayer)
-            if (OnGuardHasSpottedPlayer != null)
+            if (executePlayer != null)
             {
                 currentState = States.Finished;
-                OnGuardHasSpottedPlayer();
+                executePlayer();
             }
     }
     public IEnumerator Alerted(Vector3 pos)
     {
+
+        alerted = true;
+        gameObject.layer = 11;
         float speed = agent.speed;
         agent.speed = 1;
 
@@ -144,7 +159,8 @@ public class Guard : MonoBehaviour, ILiving
     }
     public void Alerted()
     {
-
+        alerted = true;
+        gameObject.layer = 11;
         viewAngle = AlertedAngle;
         spotlight.spotAngle = viewAngle;
         spotlight.color = AlertedColor;
@@ -181,32 +197,38 @@ public class Guard : MonoBehaviour, ILiving
         }
         return false;
     }
-    void DeactivatePlayer()
+    public void DeactivatePlayer()
     {
-        currentState = States.Shooting;
         StopAllCoroutines();
         character.StopMovement();
         agent.enabled = false;
+        currentState = States.Shooting;
+
         player.GetComponent<PlayerEnt>().Deactivate();
 
     }
-    public void CanSeeDownAlly()//for dedecting fallen comrades
+    public void DeactivatePlayerFromManager()
     {
 
-        if (Vector3.Distance(transform.position, player.position) < viewDistance)
-        {
-            Vector3 dirToPlayer = (player.position - transform.position).normalized;
-            float angleBetweenGuardAndPlayer = Vector3.Angle(transform.forward, dirToPlayer);
-            if (angleBetweenGuardAndPlayer < viewAngle / 2f)
-            {
-                if (!Physics.Linecast(transform.position, player.position, viewMask))
-                {
-                    Alerted();
-                }
-            }
-        }
+        StopAllCoroutines();
+        character.StopMovement();
+        agent.enabled = false;
+
+
 
     }
+    private void CanSeeDownAlly()
+    //for dedecting fallen comrades
+    {
+        if (Physics.Raycast(transform.position, transform.forward, viewDistance, DeadEnemies, QueryTriggerInteraction.Collide))
+        {
+            Alerted();
+        }
+    }
+
+
+
+
 
     void FollowPath()
     {

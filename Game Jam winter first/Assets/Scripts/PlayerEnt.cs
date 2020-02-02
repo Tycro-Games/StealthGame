@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PlayerEnt : MonoBehaviour, ILiving
 {
+
     [SerializeField]
     const float minTemp = -30;
     [SerializeField]
@@ -19,7 +20,11 @@ public class PlayerEnt : MonoBehaviour, ILiving
     private float RateRise = 0.2f;
     PlayerController playerController;
     PlayerShooting playerShooting;
+    public delegate void OnDead();
+    public static event OnDead onDead;
+
     ShelterCheck shelter;
+    public static bool Imobile = false;
     public static bool InStrom = true;
     // Start is called before the first frame update
     void Start()
@@ -55,14 +60,17 @@ public class PlayerEnt : MonoBehaviour, ILiving
     }
     public void Deactivate()
     {
-
+        Imobile = true;
         playerController.StopDestination();
     }
     public void Die()
     {
         Deactivate();
         Debug.Log("Player dies"); //animation coroutine
-        SceneManager.LoadScene(0);
+        if (onDead != null)
+            onDead();
+
+
     }
 
 

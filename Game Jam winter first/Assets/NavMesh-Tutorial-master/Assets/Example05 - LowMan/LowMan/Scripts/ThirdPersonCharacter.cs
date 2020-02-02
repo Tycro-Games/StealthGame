@@ -5,7 +5,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(Animator))]
-    public class ThirdPersonCharacter : MonoBehaviour
+    public class ThirdPersonCharacter : MonoBehaviour, ILiving
     {
         [SerializeField] float m_MovingTurnSpeed = 360;
         [SerializeField] float m_StationaryTurnSpeed = 180;
@@ -42,7 +42,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             m_OrigGroundCheckDistance = m_GroundCheckDistance;
         }
 
+        public void Die()
+        {
 
+            m_Animator.SetTrigger("DeathTrigger");
+            PlayerEnt player = GetComponent<PlayerEnt>();
+            if (player != null)
+                player.Die();
+        }
         public void Move(Vector3 move, bool crouch, bool jump)
         {
 

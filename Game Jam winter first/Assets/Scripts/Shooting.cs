@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
+    protected Animator anim;
     protected bool ShouldRotate = false;
     [Header("Shooting settings")]
     [SerializeField]
@@ -14,17 +15,23 @@ public class Shooting : MonoBehaviour
     protected float MaxDistance = 100;
     [SerializeField]
     private float fireRate = 1f;
-    [SerializeField]
     private float lastFirerate = 0;
+    private float TimeBetweenShots = 1.3f;
     [SerializeField]
-    private float TimeBetweenShots = 0;
+    private float ShootMultiplier = 1.0f;
 
     protected Vector3 Point;
+    public virtual void Start()
+    {
+        anim = GetComponent<Animator>();
+        anim.SetFloat("ShootMultiplier", ShootMultiplier);
+    }
     public virtual void Update()
     {
         if (ShouldRotate)
         {
             Rotate(Point, transform);
+            Rotate(Point, ShootingPos);
         }
     }
     public bool CheckToShoot(Vector3 point)
@@ -42,22 +49,29 @@ public class Shooting : MonoBehaviour
     }
     private IEnumerator Atack()
     {
+        //aiming
+
+        anim.SetTrigger("Aim");
+
         ShouldRotate = true;
-        yield return new WaitForSeconds(TimeBetweenShots);//animations time
-        Instantiate(bullet, ShootingPos.position, transform.rotation);
-
-
+        yield return new WaitForSeconds(TimeBetweenShots * (1 / ShootMultiplier));//animations time
+        DrawBullet();
         Resume();
+    }
+    void DrawBullet()
+    {
+        Instantiate(bullet, ShootingPos.position, transform.rotation);
     }
     public virtual void Resume()
     {
         ShouldRotate = false;
     }
-    public static void Rotate(Vector3 target, Transform transform)
+    public static void Rotate(Vector3 target, Transform ObjectToRotate)
     {
-        Vector3 offset = target - transform.position;
+        Vector3 offset = target - ObjectToRotate.position;
         Quaternion desiredRot = Quaternion.LookRotation(offset);
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRot, 15);
+        ObjectToRotate.rotation = Quaternion.RotateTowards(ObjectToRotate.rotation, desiredRot, 15);
+
     }
 }

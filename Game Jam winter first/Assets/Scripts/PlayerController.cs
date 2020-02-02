@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     NavMeshAgent agent;
     ThirdPersonCharacter character;
-
+    private bool reached = true;
     Vector3 DesiredDestination;
     private void Awake()
     {
@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
                 if (hit.transform.gameObject.tag == "walkable")
                 {
                     agent.SetDestination(hit.point);
+                    reached = false;
                     DesiredDestination = hit.point;
                 }
                 else
@@ -62,13 +63,15 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        if (agent.remainingDistance > agent.stoppingDistance)
+        if (agent.remainingDistance > agent.stoppingDistance && !reached)
         {
             character.Move(agent.desiredVelocity, false, false);
         }
         else
         {
+
             character.Move(Vector3.zero, false, false);
+            reached = false;
         }
     }
 }

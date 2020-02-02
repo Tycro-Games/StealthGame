@@ -9,10 +9,12 @@ public class PlayerShooting : Shooting
     public static event OnAlert onAlert;
     Camera cam;
     PlayerController playerController;
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         playerController = GetComponent<PlayerController>();
         cam = Camera.main;
+
     }
     public override void Update()
     {

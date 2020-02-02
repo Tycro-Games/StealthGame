@@ -176,8 +176,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134544417}
-  m_LocalRotation: {x: 0.12513237, y: -0.86718524, z: 0.3969868, w: 0.2733737}
-  m_LocalPosition: {x: 1.63, y: 8, z: 21.86}
+  m_LocalRotation: {x: 0.10086901, y: -0.8594095, z: 0.18632402, w: 0.46532163}
+  m_LocalPosition: {x: 1.63, y: -4.6, z: 15.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1768829715}
@@ -533,7 +533,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 2.8e-44, z: 6.618e-42, w: 1.01e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -5800,7 +5800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -25.17}
+  m_FollowOffset: {x: 0, y: -4.49, z: -25.17}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -5971,8 +5971,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088002056}
-  m_LocalRotation: {x: -0.23349045, y: -0.49552667, z: 0.14026485, w: -0.8247796}
-  m_LocalPosition: {x: -21.265522, y: 14.824678, z: -5.8893127}
+  m_LocalRotation: {x: -0.17565763, y: -0.38132256, z: 0.07403369, w: -0.90457535}
+  m_LocalPosition: {x: -11.595522, y: 6.536994, z: -5.8893127}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 804214261}
@@ -6119,7 +6119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: -18.955896, y: 0, z: 7.599806}
+  m_FollowOffset: {x: -9.585896, y: -8.287685, z: 7.599806}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -6409,8 +6409,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454726289}
-  m_LocalRotation: {x: -0.16937275, y: 0.1329566, z: -0.02308005, w: -0.97626984}
-  m_LocalPosition: {x: 0, y: 0, z: -15.21}
+  m_LocalRotation: {x: -0.08884404, y: 0.13439795, z: -0.012112721, w: -0.9868623}
+  m_LocalPosition: {x: 0, y: -4.55, z: -15.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1053525412}
@@ -6614,8 +6614,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826970540}
-  m_LocalRotation: {x: -0.23349045, y: -0.49552667, z: 0.14026485, w: -0.8247796}
-  m_LocalPosition: {x: -28.17, y: 5.5876846, z: -1.64}
+  m_LocalRotation: {x: -0.17565763, y: -0.38132256, z: 0.07403369, w: -0.90457535}
+  m_LocalPosition: {x: -18.5, y: -2.7, z: -1.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1312782476}
@@ -6761,9 +6761,14 @@ PrefabInstance:
       objectReference: {fileID: 540281500}
     - target: {fileID: 7448386077543285901, guid: 46b740e52235a8744a8bf762f3aadb65,
         type: 3}
-      propertyPath: TimeBetweenShots
-      value: 0.1
+      propertyPath: ShootMultiplier
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7448386077543285903, guid: 46b740e52235a8744a8bf762f3aadb65,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 234d9f191ab033b4dbc177984572e987, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46b740e52235a8744a8bf762f3aadb65, type: 3}
 --- !u!1 &1952779774
@@ -6927,6 +6932,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6777650445523587763, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
+        type: 3}
+      propertyPath: TimeBetweenShots
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6777650445523587763, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
+        type: 3}
+      propertyPath: ShootMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6777650445523587765, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
         type: 3}
       propertyPath: m_LocalPosition.x

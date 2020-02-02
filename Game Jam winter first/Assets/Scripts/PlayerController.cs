@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     Camera cam;
     [SerializeField]
     private float MaxDistance = 100;
-    [SerializeField]
+
     NavMeshAgent agent;
     ThirdPersonCharacter character;
     private bool reached = true;

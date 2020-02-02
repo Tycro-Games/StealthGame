@@ -176,7 +176,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134544417}
-  m_LocalRotation: {x: 0.022421656, y: -0.9728535, z: 0.107005544, w: 0.20396882}
+  m_LocalRotation: {x: 0.022421658, y: -0.9728535, z: 0.10700557, w: 0.20396882}
   m_LocalPosition: {x: 1.63, y: -4.6, z: 15.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -345,12 +345,6 @@ Transform:
   m_Father: {fileID: 852973084}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &263479913 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6777650445523587765, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
-    type: 3}
-  m_PrefabInstance: {fileID: 6777650445747220700}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &313928720
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +482,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.7549395, g: 0.8207547, b: 0.80614805, a: 1}
-  m_Intensity: 0.57
+  m_Intensity: 1.93
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -669,7 +663,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 263479913}
+  m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_ShowDebugText: 0
   m_ChildCameras:
@@ -6759,21 +6753,11 @@ PrefabInstance:
       propertyPath: pathHolder
       value: 
       objectReference: {fileID: 540281500}
-    - target: {fileID: 7448386077543285901, guid: 46b740e52235a8744a8bf762f3aadb65,
+    - target: {fileID: 7448386077543285904, guid: 46b740e52235a8744a8bf762f3aadb65,
         type: 3}
-      propertyPath: ShootMultiplier
-      value: 2
+      propertyPath: m_Center.y
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7448386077543285902, guid: 46b740e52235a8744a8bf762f3aadb65,
-        type: 3}
-      propertyPath: m_RunCycleLegOffset
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7448386077543285903, guid: 46b740e52235a8744a8bf762f3aadb65,
-        type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: 234d9f191ab033b4dbc177984572e987, type: 3}
     - target: {fileID: 7448386077543285906, guid: 46b740e52235a8744a8bf762f3aadb65,
         type: 3}
       propertyPath: m_Speed
@@ -6942,6 +6926,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6777650445523587760, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
+        type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6777650445523587764, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
+        type: 3}
+      propertyPath: m_Speed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6777650445523587765, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6997,15 +6991,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6777650445523587766, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
+        type: 3}
+      propertyPath: m_MoveSpeedMultiplier
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6777650445523587766, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
+        type: 3}
+      propertyPath: m_RunCycleLegOffset
+      value: 0.17
+      objectReference: {fileID: 0}
     - target: {fileID: 6777650445523587771, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6777650445523587771, guid: 8b01d96b69ea1914ab7f857f50e5d8ee,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b01d96b69ea1914ab7f857f50e5d8ee, type: 3}

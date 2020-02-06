@@ -11,6 +11,10 @@ public class Projectile : MonoBehaviour
     {
         speed = newSpeed;
     }
+    private void Start()
+    {
+        Destroy(gameObject, 15f);
+    }
     private void Update()
     {
         float moveDistance = speed * Time.deltaTime;
@@ -26,6 +30,7 @@ public class Projectile : MonoBehaviour
         {
             OnHitObject(hit);
         }
+
     }
     void OnHitObject(RaycastHit hit)
     {
@@ -35,6 +40,6 @@ public class Projectile : MonoBehaviour
             living.Die();
         }
 
-        Destroy(gameObject, 15f);
+        Destroy(gameObject);
     }
 }

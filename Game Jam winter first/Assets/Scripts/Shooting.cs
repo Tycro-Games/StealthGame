@@ -10,7 +10,7 @@ public class Shooting : MonoBehaviour
     [SerializeField]
     private GameObject bullet = null;
     [SerializeField]
-    private Transform ShootingPos = null;
+    protected Transform ShootingPos = null;
     [SerializeField]
     protected float MaxDistance = 100;
     [SerializeField]

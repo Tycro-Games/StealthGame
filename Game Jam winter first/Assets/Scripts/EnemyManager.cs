@@ -30,15 +30,18 @@ public class EnemyManager : MonoBehaviour
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            Guard guardToAdd = transform.GetChild(i).GetComponent<Guard>();
+            Guard guardToAdd = transform.GetChild(i).GetComponentInChildren<Guard>();
             if (guardToAdd.enabled)
                 guards.Add(guardToAdd);
         }
     }
     void Alert(Vector3 pos)
     {
+
         guards = new List<Guard>();
         FindGuards();
+        if (guards.Count == 0)
+            return;
         Guard closestEnemy = ClosestEnemy();
         closestEnemy.StartCoroutine(closestEnemy.Alerted(pos));
         Guard[] remainingGuards = guards.ToArray();

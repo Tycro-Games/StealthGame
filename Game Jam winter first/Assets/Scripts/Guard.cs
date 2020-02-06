@@ -291,7 +291,7 @@ public class Guard : MonoBehaviour, ILiving
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
 
     {
         Gizmos.color = ColorToID;

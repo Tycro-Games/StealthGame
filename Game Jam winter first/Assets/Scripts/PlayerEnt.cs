@@ -26,7 +26,8 @@ public class PlayerEnt : MonoBehaviour, ILiving
     public static event OnDead onDead;
 
     ShelterCheck shelter;
-    public static bool Imobile = false;
+
+    public static bool Dead = false;
     public static bool InStrom = true;
     // Start is called before the first frame update
     void Start()
@@ -65,7 +66,7 @@ public class PlayerEnt : MonoBehaviour, ILiving
     }
     public void Deactivate()
     {
-        Imobile = true;
+        Dead = true;
         playerController.StopDestination();
         playerController.enabled = false;
         playerShooting.enabled = false;
@@ -74,12 +75,13 @@ public class PlayerEnt : MonoBehaviour, ILiving
     public void Die()
     {
         StopCoroutine(CheckTemperature());
-        Deactivate();
+        if (!Dead)
+            Deactivate();
         Debug.Log("Player dies"); //animation coroutine
         if (onDead != null)
         {
             onDead();
-            SceneManager.LoadScene(0);
+
         }
 
 

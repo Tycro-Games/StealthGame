@@ -1271,6 +1271,7 @@ Transform:
   - {fileID: 904489470}
   - {fileID: 372193294}
   - {fileID: 1329102289}
+  - {fileID: 1853852074}
   m_Father: {fileID: 111496033}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2578,12 +2579,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1853852073}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.35, z: 0.55}
+  m_LocalRotation: {x: -0.47753045, y: 0.51318324, z: -0.5358901, w: 0.4705629}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6124713691244840236}
-  m_RootOrder: 2
+  m_Father: {fileID: 1065565016}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1866429703
 GameObject:
@@ -2942,7 +2943,7 @@ GameObject:
   - component: {fileID: 7448386077543285901}
   - component: {fileID: 7448386077543285902}
   - component: {fileID: 7448386077543285906}
-  - component: {fileID: 772802728}
+  - component: {fileID: 9184318600943818989}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -2963,7 +2964,6 @@ Transform:
   m_Children:
   - {fileID: 1520605150}
   - {fileID: 1629880909}
-  - {fileID: 1853852074}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3028,12 +3028,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb268c8fa5b10f49b6c5a38a124762d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seeDead: 10
   ColorToID: {r: 0.053387742, g: 0.6695754, b: 0.6503633, a: 1}
+  currentState: 0
   waitTime: 1.5
   timeToSpotPlayer: 0.5
   viewDistance: 8
-  RangeToSee: 3
+  RangeToSee: 2
   viewMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -3056,7 +3056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f6f2384031c964ebdb25a76051ae88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 7863308019064417908, guid: b51e105070adcd44485e7a6a6ac430e5, type: 3}
+  bullet: {fileID: 7863308019064417908, guid: 86d7332841c667640ae2db95d0f1eecd, type: 3}
   ShootingPos: {fileID: 1853852074}
   MaxDistance: 100
   fireRate: 1
@@ -3103,16 +3103,16 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &772802728
+--- !u!114 &9184318600943818989
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626363631337496619}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d59b7c7bdacfd64badcf1d3c7a387bc, type: 3}
+  m_Script: {fileID: 11500000, guid: 539f9dff8f4994748989e78782970fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radiusToBeSeen: 3
+  radiusToBeSeen: 5

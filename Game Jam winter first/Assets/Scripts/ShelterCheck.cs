@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[ExecuteInEditMode]
 public class ShelterCheck : MonoBehaviour
 {
 
@@ -15,20 +14,26 @@ public class ShelterCheck : MonoBehaviour
     private void Start()
     {
         ray = ray.normalized;
+        StartCoroutine(CheckShelter());
     }
-    private void Update()
+
+    public IEnumerator CheckShelter()
     {
-        CheckShelter();
-    }
-    public void CheckShelter()
-    {
-        if (Physics.Raycast(transform.position, ray, out hit, maxDistance, shelterLayer))
+
+        while (!PlayerEnt.Imobile)
         {
-            PlayerEnt.InStrom = false;
-        }
-        else
-        {
-            PlayerEnt.InStrom = true;
+            if (Physics.Raycast(transform.position, ray, out hit, maxDistance, shelterLayer))
+            {
+                PlayerEnt.InStrom = false;
+            }
+            else
+            {
+
+                PlayerEnt.InStrom = true;
+            }
+
+
+            yield return null;
         }
     }
     private void OnDrawGizmos()

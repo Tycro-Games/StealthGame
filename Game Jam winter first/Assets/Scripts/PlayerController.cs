@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
 
     NavMeshAgent agent;
     ThirdPersonCharacter character;
-    private bool reached = true;
+    [HideInInspector]
+    public bool reached = true;
     Vector3 DesiredDestination;
     private void Awake()
     {
@@ -63,7 +64,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        if (agent.remainingDistance > agent.stoppingDistance && !reached)
+        if (agent.remainingDistance > agent.stoppingDistance)
         {
             character.Move(agent.desiredVelocity, false, false);
         }
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
         {
 
             character.Move(Vector3.zero, false, false);
-            reached = false;
+            reached = true;
         }
     }
 }

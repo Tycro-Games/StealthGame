@@ -14,27 +14,22 @@ public class ShelterCheck : MonoBehaviour
     private void Start()
     {
         ray = ray.normalized;
-        StartCoroutine(CheckShelter());
+
     }
-
-    public IEnumerator CheckShelter()
+    private void Update()
     {
-
-        while (!PlayerEnt.Imobile)
+        if (Physics.Raycast(transform.position, ray, out hit, maxDistance, shelterLayer))
         {
-            if (Physics.Raycast(transform.position, ray, out hit, maxDistance, shelterLayer))
-            {
-                PlayerEnt.InStrom = false;
-            }
-            else
-            {
-
-                PlayerEnt.InStrom = true;
-            }
-
-
-            yield return null;
+            PlayerEnt.InStrom = false;
         }
+        else
+        {
+
+            PlayerEnt.InStrom = true;
+        }
+
+
+
     }
     private void OnDrawGizmos()
     {

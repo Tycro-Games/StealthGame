@@ -23,18 +23,22 @@ public class EnemyManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        PlayerShooting.onAlert += Alert;
+        PlayerShooting.onAlert -= Alert;
         PlayerEnt.onDead -= PlayerDead;
     }
-    void FindGuards()
+    public void FindGuards()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            guards.Add(transform.GetChild(i).GetComponent<Guard>());
+            Guard guardToAdd = transform.GetChild(i).GetComponent<Guard>();
+            if (guardToAdd.enabled)
+                guards.Add(guardToAdd);
         }
     }
     void Alert(Vector3 pos)
     {
+        guards = new List<Guard>();
+        FindGuards();
         Guard closestEnemy = ClosestEnemy();
         closestEnemy.StartCoroutine(closestEnemy.Alerted(pos));
         Guard[] remainingGuards = guards.ToArray();
@@ -48,6 +52,8 @@ public class EnemyManager : MonoBehaviour
     Guard ClosestEnemy()
     {
         Guard closestGuard = guards[0];
+        if (guards.Count == 0)
+            return closestGuard;
         float dist = (Player.position - guards[0].transform.position).sqrMagnitude;
         for (int i = 1; i < guards.Count - 1; i++)
         {

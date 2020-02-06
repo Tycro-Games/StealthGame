@@ -2229,7 +2229,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6777650445523587771}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.2
+  m_Radius: 0.5
   m_Speed: 1
   m_Acceleration: 10
   avoidancePriority: 50
@@ -2257,7 +2257,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!136 &6777650445523587760
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2268,7 +2268,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.28
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -2341,6 +2341,7 @@ MonoBehaviour:
   ShootingPos: {fileID: 670051108}
   MaxDistance: 100
   fireRate: 1
+  TimeBetweenShots: 1
   ShootMultiplier: 2
   CanAtackLayer:
     serializedVersion: 2
@@ -2378,7 +2379,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   maxDistance: 5
-  refreshRate: 1
 --- !u!1 &6791556047443025916
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class PlayerShooting : Shooting
     public static event OnAlert onAlert;
     Camera cam;
     PlayerController playerController;
+    public static bool shooting = false;
     public override void Start()
     {
         base.Start();
@@ -19,7 +20,7 @@ public class PlayerShooting : Shooting
     public override void Update()
     {
         base.Update();
-        if (Input.GetMouseButtonDown(0) && playerController.enabled)
+        if (Input.GetMouseButtonDown(0))
         {
 
 
@@ -34,7 +35,8 @@ public class PlayerShooting : Shooting
                 if (CheckToShoot(hit.point))
                 {
                     playerController.StopDestination();
-                    playerController.enabled = false;
+                    shooting = true;
+
                 }
             }
         }
@@ -42,13 +44,16 @@ public class PlayerShooting : Shooting
     }
     public override void Resume()
     {
-        if (PlayerEnt.Imobile != true)
+
+        if (shooting)
         {
             base.Resume();
-            playerController.enabled = true;
+
             playerController.ResumeDestination();
         }
+        shooting = false;
 
     }
+
 
 }

@@ -16,6 +16,7 @@ public class Shooting : MonoBehaviour
     [SerializeField]
     private float fireRate = 1f;
     private float lastFirerate = 0;
+    [SerializeField]
     private float TimeBetweenShots = 1.3f;
     [SerializeField]
     private float ShootMultiplier = 1.0f;

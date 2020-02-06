@@ -31,8 +31,6 @@ public class EnemyShooting : Shooting
     void AtackPlayer()
     {
         CheckToShoot(guard.player.position);
-
-
     }
 
 

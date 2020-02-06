@@ -49,6 +49,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             PlayerEnt player = GetComponent<PlayerEnt>();
             if (player != null)
                 player.Die();
+
         }
         public void Move(Vector3 move, bool crouch, bool jump)
         {

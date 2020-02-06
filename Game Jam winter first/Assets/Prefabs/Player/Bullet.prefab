@@ -94,5 +94,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 1847
+    m_Bits: 5943
   speed: 50

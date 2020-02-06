@@ -34,6 +34,7 @@ public class PlayerEnt : MonoBehaviour, ILiving
         playerShooting = GetComponent<PlayerShooting>();
         playerController = GetComponent<PlayerController>();
         character = GetComponent<ThirdPersonCharacter>();
+        shelter = GetComponent<ShelterCheck>();
         StartCoroutine(CheckTemperature());
     }
 
@@ -45,7 +46,7 @@ public class PlayerEnt : MonoBehaviour, ILiving
         {
             if (InStrom)
                 Temperature -= RateDrop;
-            else
+            else if (Temperature < maxTemp)
             {
                 Temperature += RateRise;
             }
@@ -66,14 +67,20 @@ public class PlayerEnt : MonoBehaviour, ILiving
     {
         Imobile = true;
         playerController.StopDestination();
-        playerShooting.StopAllCoroutines();
+        playerController.enabled = false;
+        playerShooting.enabled = false;
+
     }
     public void Die()
     {
+        StopCoroutine(CheckTemperature());
         Deactivate();
         Debug.Log("Player dies"); //animation coroutine
         if (onDead != null)
+        {
             onDead();
+            SceneManager.LoadScene(0);
+        }
 
 
     }

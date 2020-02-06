@@ -14,6 +14,8 @@ public class Guard : MonoBehaviour, ILiving
     public States currentState;
     public float waitTime = .3f;
     public float timeToSpotPlayer = 1f;
+    [SerializeField]
+    private float ReactionTime = 2f;
     Light spotlight;
     [SerializeField]
     private float viewDistance = 10f;
@@ -38,7 +40,7 @@ public class Guard : MonoBehaviour, ILiving
     private ThirdPersonCharacter character;
     NavMeshAgent agent;
     Vector3 targetWaypoint;
-    private bool alerted = false;
+    public bool alerted = false;
     void Awake()
     {
         ColorToID = Random.ColorHSV();
@@ -61,7 +63,7 @@ public class Guard : MonoBehaviour, ILiving
         spotlight = GetComponentInChildren<Light>();
         viewAngle = spotlight.spotAngle;
         originalSpotlightColour = spotlight.color;
-
+        StartCoroutine(CanSeeDownAlly());
     }
 
     void SetUp()
@@ -72,7 +74,9 @@ public class Guard : MonoBehaviour, ILiving
     }
     public void Die()
     {
-
+        if (currentState == States.Shooting)
+            return;
+        StopAllCoroutines();
         character.Die();
         spotlight.enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -80,6 +84,7 @@ public class Guard : MonoBehaviour, ILiving
         currentState = States.Finished;
         agent.enabled = false;
         GetComponent<DeadEnemy>().enabled = true;
+        GetComponentInParent<EnemyManager>().FindGuards();
         this.enabled = false;
     }
     private void OnEnable()
@@ -107,8 +112,8 @@ public class Guard : MonoBehaviour, ILiving
             }
         }
         RotateToTarget();
-        if (!alerted)
-            CanSeeDownAlly();
+
+
 
 
 
@@ -133,34 +138,38 @@ public class Guard : MonoBehaviour, ILiving
             {
                 currentState = States.Finished;
                 executePlayer();
+
             }
     }
     public IEnumerator Alerted(Vector3 pos)
     {
+        yield return new WaitForSeconds(ReactionTime);
+        if (agent.enabled)
+        {
 
-        alerted = true;
-        gameObject.layer = 11;
-        float speed = agent.speed;
-        agent.speed = 1;
+            alerted = true;
+            gameObject.layer = 12;
+            float speed = agent.speed;
+            agent.speed = 1;
 
-        agent.SetDestination(pos);
+            agent.SetDestination(pos);
 
-        viewAngle = AlertedAngle;
-        spotlight.spotAngle = 100;
-        spotlight.color = AlertedColor;
-        originalSpotlightColour = spotlight.color;
-        currentState = States.Walking;
-        StopCoroutine(ReachWaypoint());
-        yield return StartCoroutine(ReachWaypoint(pos));
-        agent.speed = speed;
-        FollowPath();
-
+            viewAngle = AlertedAngle;
+            spotlight.spotAngle = 100;
+            spotlight.color = AlertedColor;
+            originalSpotlightColour = spotlight.color;
+            currentState = States.Walking;
+            StopCoroutine(ReachWaypoint());
+            yield return StartCoroutine(ReachWaypoint(pos));
+            agent.speed = speed;
+            FollowPath();
+        }
 
     }
     public void Alerted()
     {
         alerted = true;
-        gameObject.layer = 11;
+        gameObject.layer = 12;
         viewAngle = AlertedAngle;
         spotlight.spotAngle = viewAngle;
         spotlight.color = AlertedColor;
@@ -199,11 +208,9 @@ public class Guard : MonoBehaviour, ILiving
     }
     public void DeactivatePlayer()
     {
-        StopAllCoroutines();
         character.StopMovement();
         agent.enabled = false;
         currentState = States.Shooting;
-
         player.GetComponent<PlayerEnt>().Deactivate();
 
     }
@@ -217,12 +224,20 @@ public class Guard : MonoBehaviour, ILiving
 
 
     }
-    private void CanSeeDownAlly()
+    private IEnumerator CanSeeDownAlly()
     //for dedecting fallen comrades
     {
-        if (Physics.Raycast(transform.position, transform.forward, viewDistance, DeadEnemies, QueryTriggerInteraction.Collide))
+        while (alerted != true)
         {
-            Alerted();
+            Physics.queriesHitBackfaces = true;
+            if (Physics.Raycast(transform.position, transform.forward, viewDistance, DeadEnemies, QueryTriggerInteraction.Collide))
+            {
+                Alerted();
+            }
+
+            Physics.queriesHitBackfaces = false;
+
+            yield return null;
         }
     }
 

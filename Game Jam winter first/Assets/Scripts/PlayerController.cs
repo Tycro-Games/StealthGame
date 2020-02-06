@@ -32,10 +32,11 @@ public class PlayerController : MonoBehaviour
 
         character.StopMovement();
         agent.enabled = false;
-        this.enabled = false;
+
     }
     public void ResumeDestination()
     {
+
         agent.enabled = true;
         agent.destination = DesiredDestination;//resume destination
     }
@@ -43,8 +44,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (agent.enabled == false)
-            return;
+        {
+            if (PlayerShooting.shooting != true)
+                agent.enabled = true;
+            else
+                return;
+        }
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);

@@ -22,7 +22,7 @@ public class Projectile : MonoBehaviour
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, moveDistance + skinWidth, collisionMask, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(ray, out hit, moveDistance + skinWidth, collisionMask))
         {
             OnHitObject(hit);
         }
@@ -34,6 +34,7 @@ public class Projectile : MonoBehaviour
         {
             living.Die();
         }
-        Destroy(gameObject);
+
+        Destroy(gameObject, 15f);
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayerShooting : Shooting
 {
-    [SerializeField]
-    Transform AimElement;
+
     [SerializeField]
     private LayerMask CanAtackLayer = 0;
     public delegate void OnAlert(Vector3 pos);
@@ -17,6 +16,8 @@ public class PlayerShooting : Shooting
     private RaycastHit hit;
     [Header("AimAssist")]
     [SerializeField]
+    Transform AimElement = null;
+    [SerializeField]
     LineRenderer aimAsist = null;
     [SerializeField]
     private LayerMask aimAsistLayerFromCam = 0;
@@ -26,7 +27,7 @@ public class PlayerShooting : Shooting
     float maxAimDist = 10f;
 
     [SerializeField]
-    private Gradient AimOnShootGradient;
+    private Gradient AimOnShootGradient = null;
     private Gradient previousGradient;
     public override void Start()
     {

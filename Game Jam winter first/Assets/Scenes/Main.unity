@@ -535,7 +535,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.7549395, g: 0.8207547, b: 0.80614805, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 0.97
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -650,6 +650,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5854,14 +5855,14 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -5888,8 +5889,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088002056}
-  m_LocalRotation: {x: 0.4843133, y: -0.21522531, z: 0.12426039, w: 0.83885527}
-  m_LocalPosition: {x: 6.7790837, y: 15.54, z: -16.779541}
+  m_LocalRotation: {x: 0.49929756, y: 0.042428937, z: -0.024489678, w: 0.86504453}
+  m_LocalPosition: {x: -0.97, y: 20.77, z: -15.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 555170541}
@@ -5913,7 +5914,6 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_CameraOutput: 0
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -5925,6 +5925,7 @@ MonoBehaviour:
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
+  m_ClearDepth: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
@@ -5944,10 +5945,10 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
-  m_BlendUpdateMethod: 1
+  m_UpdateMethod: 1
+  m_BlendUpdateMethod: 0
   m_DefaultBlend:
-    m_Style: 1
+    m_Style: 5
     m_Time: 2
     m_CustomCurve:
       serializedVersion: 2
@@ -6015,6 +6016,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6065,7 +6067,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -6260,7 +6262,7 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 5.557934, y: 12.6812315, z: -15.15879}
+      - m_Value: {x: -1.0619911, y: 17.911707, z: -13.892121}
         m_Name: Camera_position
         m_Overridden: 1
       - m_Value: {x: 0.6976167, y: 0, z: -0.7164712}
@@ -6763,56 +6765,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key0.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key0.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key0.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key1.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key1.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key1.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.key1.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1615450489618875929, guid: 80dba50bf22f4d74990da46801aae9ef,
-        type: 3}
-      propertyPath: AimOnShootGradient.atime0
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1615450489634721170, guid: 80dba50bf22f4d74990da46801aae9ef,
         type: 3}
       propertyPath: m_Name

@@ -1964,7 +1964,7 @@ GameObject:
   - component: {fileID: 1208755438694731147}
   m_Layer: 0
   m_Name: Enemy 1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3338,6 +3338,8 @@ MonoBehaviour:
   currentState: 0
   waitTime: 1.5
   timeToSpotPlayer: 0.5
+  player: {fileID: 0}
+  alerted: 0
   ReactionTime: 0.5
   viewDistance: 8
   RangeToSee: 4
@@ -3348,10 +3350,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   pathHolder: {fileID: 1208755438633710170}
-  player: {fileID: 0}
   AlertedColor: {r: 1, g: 0.9642606, b: 0, a: 1}
   AlertedAngle: 180
-  alerted: 0
 --- !u!114 &8618665956123660391
 MonoBehaviour:
   m_ObjectHideFlags: 0

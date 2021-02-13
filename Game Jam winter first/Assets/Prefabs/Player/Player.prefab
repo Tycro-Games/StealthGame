@@ -736,12 +736,12 @@ MonoBehaviour:
   ShootingPos: {fileID: 5216354204120350606}
   MaxDistance: 100
   fireRate: 1
-  TimeBetweenShots: 0.8
+  TimeBetweenShots: 0.5
   ShootMultiplier: 1.3
-  AimElement: {fileID: 205468271}
   CanAtackLayer:
     serializedVersion: 2
     m_Bits: 307
+  AimElement: {fileID: 205468271}
   aimAsist: {fileID: 1615450490487753263}
   aimAsistLayerFromCam:
     serializedVersion: 2
@@ -752,8 +752,8 @@ MonoBehaviour:
   maxAimDist: 0.1
   AimOnShootGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 1, g: 0, b: 0, a: 0.5019608}
+    key1: {r: 1, g: 0, b: 0, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}

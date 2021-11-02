@@ -76,10 +76,11 @@ public class Guard : MonoBehaviour, ILiving
         spotlight.enabled = false;
         GetComponent<Rigidbody> ().isKinematic = true;
         GetComponent<Collider> ().isTrigger = true;
+        FindObjectOfType<EnemyManager>().RemoveGuard(this);
         currentState = States.Finished;
         agent.enabled = false;
         GetComponent<DeadEnemy> ().enabled = true;
-        GetComponentInParent<EnemyManager> ().FindGuards ();
+        
         this.enabled = false;
     }
 
@@ -123,12 +124,12 @@ public class Guard : MonoBehaviour, ILiving
             return true;
 
         Vector3 distance = player.position - transform.position;
-        if (distance.sqrMagnitude < RangeToSee * RangeToSee)
-        {
-            if (agent.enabled)
-                DeactivatePlayer ();
-            return true;
-        }
+        //if (distance.sqrMagnitude < RangeToSee * RangeToSee)
+        //{
+        //    if (agent.enabled)
+        //        DeactivatePlayer ();
+        //    return true;
+        //}
         if (distance.sqrMagnitude < viewDistance * viewDistance)
         {
             Vector3 dirToPlayer = (player.position - transform.position).normalized;

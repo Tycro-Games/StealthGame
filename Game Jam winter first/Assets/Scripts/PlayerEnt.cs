@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.ThirdPerson;
 public class PlayerEnt : MonoBehaviour, ILiving
@@ -24,6 +25,7 @@ public class PlayerEnt : MonoBehaviour, ILiving
     ThirdPersonCharacter character;
     public delegate void OnDead();
     public static event OnDead onDead;
+    public   UnityEvent OnDeadEvent;
 
     ShelterCheck shelter;
 
@@ -83,7 +85,7 @@ public class PlayerEnt : MonoBehaviour, ILiving
             onDead();
 
         }
-
+        OnDeadEvent?.Invoke();
 
     }
 

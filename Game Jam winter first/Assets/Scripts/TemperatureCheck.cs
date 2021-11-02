@@ -8,6 +8,11 @@ public class TemperatureCheck : MonoBehaviour
     [SerializeField]
     Image thermo = null;
     bool stop = false;
+    [SerializeField]
+    private Color blue; 
+    [SerializeField]
+    private Color red;
+
     private void OnEnable()
     {
         PlayerEnt.onDead += Stop;
@@ -28,6 +33,10 @@ public class TemperatureCheck : MonoBehaviour
     {
         while (!stop)
         {
+            if (PlayerEnt.InStrom)
+                thermo.color = blue;
+            else
+                thermo.color = red;
             thermo.fillAmount = playerTemp.TemperatureTo01();
             yield return null;
         }

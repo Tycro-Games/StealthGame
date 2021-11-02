@@ -1,12 +1,27 @@
 fileFormatVersion: 2
 guid: 234d9f191ab033b4dbc177984572e987
 ModelImporter:
-  serializedVersion: 19300
+  serializedVersion: 19301
   internalIDToNameTable:
   - first:
       74: -4791504522942941401
     second: Armature|Armature|mixamo.com|Layer0
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch_49_body1
+    second: {fileID: 2100000, guid: 0add5c340986764499dc979a41ef0d03, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch_49_body2
+    second: {fileID: 2100000, guid: 00e7fb55ca2cb974faf70193516f9b26, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch_49_eyelashes
+    second: {fileID: 2100000, guid: 4405fd5965266694c8f295922800208b, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -18,8 +33,7 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    rigImportErrors: "Avatar creation failed:\n\tTransform 'Armature' not found in
-      HumanDescription.\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -47,6 +61,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

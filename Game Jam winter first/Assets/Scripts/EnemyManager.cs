@@ -1,31 +1,56 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField]
     private List<Guard> guards = new List<Guard>();
-    Transform Player;
+
+    private Transform Player;
+
+    [SerializeField]
+    private UnityEvent onNoEnemies;
+    public void RemoveGuard(Guard g)
+    {
+        guards.Remove(g);
+    }
+
     private void Awake()
     {
         FindGuards();
     }
+
     private void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
-
     }
+
     private void OnEnable()
     {
         PlayerShooting.onAlert += Alert;
         PlayerEnt.onDead += PlayerDead;
     }
+
     private void OnDisable()
     {
         PlayerShooting.onAlert -= Alert;
         PlayerEnt.onDead -= PlayerDead;
     }
+
+    public void CheckAliveGuards()
+    {
+        foreach (Guard g in guards)
+        {
+            if (g.TryGetComponent(out DeadEnemy en))
+                if (en.enabled == false)
+                    return;
+        }
+
+        onNoEnemies?.Invoke();
+       
+    }
+
     public void FindGuards()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -35,12 +60,11 @@ public class EnemyManager : MonoBehaviour
                 guards.Add(guardToAdd);
         }
     }
-    void Alert(Vector3 pos)
+
+    private void Alert(Vector3 pos)
     {
 
-        guards = new List<Guard>();
-        FindGuards();
-        if (guards.Count == 0)
+        if (guards.Count == 0 )
             return;
         Guard closestEnemy = ClosestEnemy();
         closestEnemy.StartCoroutine(closestEnemy.Alerted(pos));
@@ -51,8 +75,10 @@ public class EnemyManager : MonoBehaviour
                 continue;
             remainingGuards[i].Alerted();
         }
+        
     }
-    Guard ClosestEnemy()
+
+    private Guard ClosestEnemy()
     {
         Guard closestGuard = guards[0];
         if (guards.Count == 0)
@@ -69,13 +95,13 @@ public class EnemyManager : MonoBehaviour
         }
         return closestGuard;
     }
+
     public void PlayerDead()
     {
         foreach (Guard g in guards)
         {
             g.DeactivatePlayerFromManager();
             g.currentState = Guard.States.Finished;
-
         }
     }
 }

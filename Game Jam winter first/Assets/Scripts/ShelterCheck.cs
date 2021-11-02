@@ -16,7 +16,7 @@ public class ShelterCheck : MonoBehaviour
         ray = ray.normalized;
 
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (Physics.Raycast(transform.position, ray, out hit, maxDistance, shelterLayer))
         {

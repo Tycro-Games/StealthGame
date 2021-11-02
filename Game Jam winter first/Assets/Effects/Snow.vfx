@@ -279,9 +279,9 @@ VisualEffectResource:
       Gravity(inout float3 velocity, float3 Force, float deltaTime)\n{\n    velocity
       += Force * deltaTime;\n}\nvoid Turbulence_18D(float3 position, inout float3
       velocity, float mass, float4x4 InvFieldTransform, float4x4 FieldTransform,
-      float Intensity, float Drag, float frequency, float roughness, float lacunarity,
-      int octaves, float deltaTime) /*Mode:Relative NoiseType:Value */\n{\n    float3
-      vectorFieldCoord = mul(InvFieldTransform, float4(position,1.0f)).xyz;\n   
+      float Intensity, float Drag, float frequency, int octaves, float roughness,
+      float lacunarity, float deltaTime) /*Mode:Relative NoiseType:Value */\n{\n   
+      float3 vectorFieldCoord = mul(InvFieldTransform, float4(position,1.0f)).xyz;\n   
       \n    float3 value = GenerateValueCurlNoise(vectorFieldCoord + 0.5f, frequency,
       octaves, roughness, lacunarity);\n    value = mul(FieldTransform,float4(value,0.0f)).xyz
       * Intensity;\n    \n    velocity += (value - velocity) * min(1.0f,Drag * deltaTime
@@ -315,8 +315,8 @@ VisualEffectResource:
       stripData);\r\n#endif\r\n\t\t\t\r\n\t\t\tGravity( /*inout */attributes.velocity,
       Force_a, deltaTime_a);\n\t\t\t{\n\t\t\t    Turbulence_18D(attributes.position, 
       /*inout */attributes.velocity, attributes.mass, float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1),
-      float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), (float)1, (float)1, (float)1, (float)0.5,
-      (float)2, (int)1, deltaTime_a);\n\t\t\t}\n\t\t\tTileWarp( /*inout */attributes.position,
+      float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), (float)1, (float)1, (float)1, (int)1,
+      (float)0.5, (float)2, deltaTime_a);\n\t\t\t}\n\t\t\tTileWarp( /*inout */attributes.position,
       Volume_center_c, Volume_size_c, invVolumeSize_c);\n\t\t\tEulerIntegration(
       /*inout */attributes.position, attributes.velocity, deltaTime_a);\n\t\t\tAngularEulerIntegration(
       /*inout */attributes.angleZ, attributes.angularVelocityZ, deltaTime_a);\n\t\t\tAge(
@@ -352,8 +352,8 @@ VisualEffectResource:
       InitStripAttributes(index, attributes, stripData);\r\n#endif\r\n\t\t\r\n\t\tGravity(
       /*inout */attributes.velocity, Force_a, deltaTime_a);\n\t\t{\n\t\t    Turbulence_18D(attributes.position, 
       /*inout */attributes.velocity, attributes.mass, float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1),
-      float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), (float)1, (float)1, (float)1, (float)0.5,
-      (float)2, (int)1, deltaTime_a);\n\t\t}\n\t\tTileWarp( /*inout */attributes.position,
+      float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), (float)1, (float)1, (float)1, (int)1,
+      (float)0.5, (float)2, deltaTime_a);\n\t\t}\n\t\tTileWarp( /*inout */attributes.position,
       Volume_center_c, Volume_size_c, invVolumeSize_c);\n\t\tEulerIntegration( /*inout
       */attributes.position, attributes.velocity, deltaTime_a);\n\t\tAngularEulerIntegration(
       /*inout */attributes.angleZ, attributes.angularVelocityZ, deltaTime_a);\n\t\tAge(
@@ -388,7 +388,7 @@ VisualEffectResource:
       1\n\t\t#define VFX_BLENDMODE_ADD 1\n\t\t#define USE_FLIPBOOK 1\n\t\t#define
       VFX_PRIMITIVE_QUAD 1\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t#define VFX_WORLD_SPACE
       1\n\t\t#include \"Packages/com.unity.visualeffectgraph/Shaders/RenderPipeline/Universal/VFXDefines.hlsl\"\n\t\t\n\n\t\tCBUFFER_START(parameters)\n\t\t   
-      float uniform_b;\n\t\t    float Color_c;\n\t\t    uint2 PADDING_0;\n\t\tCBUFFER_END\n\t\t\n\t\tstruct
+      float uniform_a;\n\t\t    float Color_c;\n\t\t    uint2 PADDING_0;\n\t\tCBUFFER_END\n\t\t\n\t\tstruct
       Attributes\n\t\t{\n\t\t    float lifetime;\n\t\t    float3 position;\n\t\t   
       float scaleX;\n\t\t    float scaleY;\n\t\t    float scaleZ;\n\t\t    float3
       color;\n\t\t    float alpha;\n\t\t    bool alive;\n\t\t    float3 axisX;\n\t\t   
@@ -396,7 +396,7 @@ VisualEffectResource:
       angleY;\n\t\t    float angleZ;\n\t\t    float pivotX;\n\t\t    float pivotY;\n\t\t   
       float pivotZ;\n\t\t    float size;\n\t\t    float texIndex;\n\t\t    float
       age;\n\t\t    uint particleId;\n\t\t};\n\t\t\n\t\tstruct SourceAttributes\n\t\t{\n\t\t};\n\t\t\n\t\tTexture2D
-      mainTexture;\n\t\tSamplerState samplermainTexture;\n\t\tfloat4 mainTexture_TexelSize;\n\t\t\n\n\t\t\n\t\t#define
+      mainTexture;\n\t\tSamplerState samplermainTexture;\n\t\tfloat4 mainTexture_TexelSize;\n\t\t\n\t\t\n\n\t\t\n\t\t#define
       VFX_NEEDS_COLOR_INTERPOLATOR (VFX_USE_COLOR_CURRENT || VFX_USE_ALPHA_CURRENT)\n\t\t#if
       HAS_STRIPS\n\t\t#define VFX_OPTIONAL_INTERPOLATION \n\t\t#else\n\t\t#define
       VFX_OPTIONAL_INTERPOLATION nointerpolation\n\t\t#endif\n\t\t\n\t\tByteAddressBuffer
@@ -518,7 +518,7 @@ VisualEffectResource:
       = (attributeBuffer.Load((index * 0x4 + 0xF4383) << 2));\n\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\n\t\t\t\t\t\t//
       Initialize built-in needed attributes\n\t\t\t\t\t\t#if HAS_STRIPS\n\t\t\t\t\t\tInitStripAttributes(index,
       attributes, stripData);\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\t\n\t\t\t\t{\n\t\t\t\t   
-      uint tmp_bc = attributes.particleId ^ asuint(uniform_b);\n\t\t\t\t    float
+      uint tmp_bc = attributes.particleId ^ asuint(uniform_a);\n\t\t\t\t    float
       tmp_bd = FixedRand(tmp_bc);\n\t\t\t\t    float tmp_bf = tmp_bd * (float)4;\n\t\t\t\t   
       SetAttribute_CA10063D( /*inout */attributes.texIndex, tmp_bf);\n\t\t\t\t}\n\t\t\t\tOrient_4(
       /*inout */attributes.axisX,  /*inout */attributes.axisY,  /*inout */attributes.axisZ);\n\t\t\t\tAttributeFromCurve_48A86161(
@@ -734,7 +734,7 @@ VisualEffectResource:
       = (attributeBuffer.Load((index * 0x4 + 0xF4383) << 2));\n\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\n\t\t\t\t\t\t//
       Initialize built-in needed attributes\n\t\t\t\t\t\t#if HAS_STRIPS\n\t\t\t\t\t\tInitStripAttributes(index,
       attributes, stripData);\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\t\n\t\t\t\t{\n\t\t\t\t   
-      uint tmp_bc = attributes.particleId ^ asuint(uniform_b);\n\t\t\t\t    float
+      uint tmp_bc = attributes.particleId ^ asuint(uniform_a);\n\t\t\t\t    float
       tmp_bd = FixedRand(tmp_bc);\n\t\t\t\t    float tmp_bf = tmp_bd * (float)4;\n\t\t\t\t   
       SetAttribute_CA10063D( /*inout */attributes.texIndex, tmp_bf);\n\t\t\t\t}\n\t\t\t\tOrient_4(
       /*inout */attributes.axisX,  /*inout */attributes.axisY,  /*inout */attributes.axisZ);\n\t\t\t\tAttributeFromCurve_48A86161(
@@ -1029,7 +1029,7 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 5
+        data[3]: 1
       - op: 57
         valueIndex: 42
         data[0]: 25
@@ -1053,7 +1053,7 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 1
+        data[3]: 5
       - op: 31
         valueIndex: 49
         data[0]: 21
@@ -1156,7 +1156,7 @@ VisualEffectResource:
           m_Value: 4
         - m_ExpressionIndex: 26
           m_Value: 0
-        - m_ExpressionIndex: 31
+        - m_ExpressionIndex: 27
           m_Value: 2
         - m_ExpressionIndex: 39
           m_Value: 15
@@ -1194,7 +1194,7 @@ VisualEffectResource:
         m_Array:
         - m_ExpressionIndex: 17
           m_Value: 0
-        - m_ExpressionIndex: 27
+        - m_ExpressionIndex: 31
           m_Value: 1
       m_Matrix4x4f:
         m_Array:
@@ -1425,8 +1425,8 @@ VisualEffectResource:
       lightProbeUsage: 0
     m_CullingFlags: 3
     m_UpdateMode: 0
-    m_PreWarmDeltaTime: 0.05
-    m_PreWarmStepCount: 0
+    m_PreWarmDeltaTime: 2
+    m_PreWarmStepCount: 1
     m_InitialEventName: OnPlay
   m_Systems:
   - type: 0
@@ -1520,7 +1520,7 @@ VisualEffectResource:
         index: 0
       temporaryBuffers: []
       values:
-      - nameId: uniform_b
+      - nameId: uniform_a
         index: 13
       - nameId: Color_c
         index: 28
@@ -4138,6 +4138,12 @@ MonoBehaviour:
       m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
     attributes:
+    - m_Type: 0
+      m_Min: 1
+      m_Max: 8
+      m_Tooltip: 
+      m_Regex: 
+      m_RegexMaxLength: 0
     - m_Type: 3
       m_Min: -Infinity
       m_Max: Infinity
